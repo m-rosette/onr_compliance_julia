@@ -17,7 +17,7 @@
   <link name="bravo_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1019_base.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1019_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -50,7 +50,7 @@
   <link name="bravo_1019_end_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1019_end.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1019_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -63,7 +63,7 @@
   <link name="bravo_1013_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1013_base.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1013_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -90,7 +90,7 @@
   <link name="bravo_1013_joint_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1013_end.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1013_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -115,7 +115,7 @@
   <link name="bravo_1023_0_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1023_0_base.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_0_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -142,7 +142,7 @@
   <link name="bravo_1023_0_joint_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1023_0_end.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_0_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -176,7 +176,7 @@
   <link name="bravo_1023_1_joint_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1023_1_end.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_1_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -201,7 +201,7 @@
   <link name="bravo_1028_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1028.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1028.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -226,7 +226,7 @@
   <link name="bravo_jaws_base_link">
     <!--        <visual>-->
     <!--            <geometry>-->
-    <!--                <mesh filename="package://bpl_bravo_description/meshes/end_effectors/RS2-257.stl"/>-->
+    <!--                <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-257.obj"/>-->
     <!--            </geometry>-->
     <!--            <material name="bravo_jaws_black"/>-->
     <!--            </visual>-->
@@ -242,7 +242,7 @@
   <link name="bravo_1030_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/RS2-1030.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1030.obj"/>
       </geometry>
       <material name="bravo_black"/>
     </visual>
@@ -300,7 +300,7 @@
   <link name="bravo_finger_jaws_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/end_effectors/RS2-257.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-257.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
     </visual>
@@ -314,7 +314,7 @@
   <link name="bravo_finger_jaws_rs2_300_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/end_effectors/RS2-300.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-300.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
     </visual>
@@ -336,7 +336,7 @@
   <link name="bravo_finger_jaws_rs2_301_link">
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description/meshes/end_effectors/RS2-301.stl"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-301.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
     </visual>

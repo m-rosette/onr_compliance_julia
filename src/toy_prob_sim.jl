@@ -6,4 +6,19 @@ using GeometryBasics
 using Revise
 using Plots, CSV, Tables, ProgressBars
 using onr_compliance_julia
+
+
+src_dir = dirname(pathof(onr_compliance_julia))
+urdf_file = joinpath(src_dir, "..", "urdf", "toy_vehicle.urdf")
+
+
 println("Libraries imported.")
+
+
+vis = Visualizer()
+mechanism_toy = parse_urdf(urdf_file; gravity = [0.0, 0.0, -9.81])
+
+delete!(vis)
+visuals = URDFVisuals(urdf_file)
+mvis_toy = MechanismVisualizer(mechanism_toy, URDFVisuals(urdf_file), vis[:toy])
+open(mvis_toy)
