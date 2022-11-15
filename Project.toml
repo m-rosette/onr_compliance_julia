@@ -1,0 +1,4 @@
+name = "onr_compliance_julia"
+uuid = "61b664e3-6ddb-4679-b52f-61f70e6ab2dc"
+authors = ["Marcus Rosette <rosettem@oregonstate.edu>"]
+version = "0.1.0"
