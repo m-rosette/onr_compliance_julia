@@ -9,7 +9,7 @@ using onr_compliance_julia
 
 
 src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "toy_vehicle.urdf")
+urdf_file = joinpath(src_dir, "..", "urdf", "bravo_seabotix.urdf")
 
 
 println("Libraries imported.")
@@ -21,4 +21,4 @@ mechanism_toy = parse_urdf(urdf_file; gravity = [0.0, 0.0, -9.81])
 delete!(vis)
 visuals = URDFVisuals(urdf_file)
 mvis_toy = MechanismVisualizer(mechanism_toy, URDFVisuals(urdf_file), vis[:toy])
-open(mvis_toy)
+render(mvis_toy)
