@@ -9,7 +9,7 @@ using onr_compliance_julia
 
 
 src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "bravo_seabotix.urdf")
+urdf_file = joinpath(src_dir, "..", "urdf", "bravo5_seabotix.urdf")
 
 
 println("Libraries imported.")
