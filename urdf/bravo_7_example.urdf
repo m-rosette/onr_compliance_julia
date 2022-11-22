@@ -15,7 +15,7 @@
   </material>
   <link name="world"/>
   <joint name="bravo_joint" type="fixed">
-    <origin rpy="1.5709 0 0" xyz="0 0 0"/>    <!-- Old rpy="0 0 0" ________________________________________________________________-->
+    <origin rpy="1.57079 0 0" xyz="0 0 0"/>    <!-- Old rpy="0 0 0" ________________________________________________________________-->
     <parent link="world"/>
     <child link="bravo_base_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -357,7 +357,7 @@
     <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
     <parent link="bravo_base_link"/>
     <child link="bravo_1019_end_link"/>
-    <axis xyz=" 0.  0. -1."/>
+    <axis xyz=" 0.  -1. 0."/>
     <origin rpy="0.0 0.0 3.14159" xyz="0.0665 0.08 0.0"/> <!-- Old: rpy="0.0 0.0 3.14159" xyz="0.0665 0.0 0.08"/>___________________________________________________-->
   </joint>
   <joint name="bravo_axis_a" type="prismatic">
@@ -373,7 +373,7 @@
     <mimic joint="bravo_axis_a" multiplier="18.0" offset="0.0"/>
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_finger_jaws_rs2_300_link"/>
-    <axis xyz=" 0.  0. -1."/>
+    <axis xyz=" 0.  -1. 0."/>
     <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 -0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>-->
   </joint>
   <joint name="bravo_finger_jaws_rs2_301_joint" type="revolute">
@@ -381,7 +381,7 @@
     <mimic joint="bravo_finger_jaws_rs2_300_joint" multiplier="1.0" offset="0.0"/>
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_finger_jaws_rs2_301_link"/>
-    <axis xyz="0. 0. 1."/>
+    <axis xyz="0. 1. 0."/>
     <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>-->
   </joint>
   <joint name="bravo_axis_b" type="continuous">
@@ -389,7 +389,7 @@
     <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
     <parent link="bravo_1023_0_joint_link"/>
     <child link="bravo_1023_1_joint_link"/>
-    <axis xyz=" 0.  0. -1."/>
+    <axis xyz=" 0.  -1. 0."/>
     <origin rpy="3.14159 -0.0 0" xyz="0.0408 -0.09434999999999824 0"/> <!-- Old: rpy="3.14159 -0.0 0.6" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>____________________________-->
   </joint>
   <joint name="bravo_axis_c" type="revolute">
@@ -397,7 +397,7 @@
     <limit effort="500.0" lower="0.0" upper="3.2" velocity="3.0"/>
     <parent link="bravo_1026_1_joint_link"/>
     <child link="bravo_1023_0_joint_link"/>
-    <axis xyz=" 0. -1.  0."/>
+    <axis xyz=" 0. 0. -1."/>
     <origin rpy="0.0 3.14159 3.14159" xyz="-0.041999999999852135 0.0634 0"/> <!-- Old: rpy="0.0 -0.0 3.14159" xyz="-0.041999999999852135 1.1145077132081467e-07 0.0634"/>______________________-->
   </joint>
   <joint name="bravo_axis_d" type="revolute">
@@ -405,7 +405,7 @@
     <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
     <parent link="bravo_1026_0_joint_link"/>
     <child link="bravo_1026_1_joint_link"/>
-    <axis xyz=" 0.  0. -1."/>
+    <axis xyz=" 0.  -1. 0."/>
     <origin rpy="3.14159 -0.0 0.0" xyz="0.0408 -0.09434999999999824 0.0056"/> <!-- Old: rpy="3.14159 -0.0 0.0" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>______________________-->
   </joint>
   <joint name="bravo_axis_e" type="revolute">
@@ -413,7 +413,7 @@
     <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
     <parent link="bravo_1013_joint_link"/>
     <child link="bravo_1026_0_joint_link"/>
-    <axis xyz=" 0. -1.  0."/>
+    <axis xyz=" 0. 0.  -1."/>
     <origin rpy="0 0 0" xyz="0 -0.29035 0"/> <!-- Old: rpy="3.14159 -0.0 3.14159" xyz="0.0040000000018364235 7.477816037645589e-07 -0.29034999999915573"/>_____________________________________-->
   </joint>
   <joint name="bravo_axis_f" type="revolute">
@@ -421,285 +421,7 @@
     <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
-    <axis xyz=" 0. -1.  0."/>
+    <axis xyz=" 0. 0. -1."/>
     <origin rpy="0.0 -0.0 3.14159" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
   </joint>
-  <gazebo>
-    <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="bravo_finger_jaws_rs2_300_jointmimic_joint_plugin">
-      <joint>bravo_axis_a</joint>
-      <mimicJoint>bravo_finger_jaws_rs2_300_joint</mimicJoint>
-      <multiplier>18.0</multiplier>
-      <offset>0</offset>
-      <sensitiveness>0.0</sensitiveness>
-      <!-- if absolute difference between setpoint and process value is below this threshold, do nothing; 0.0 = disable [rad] -->
-      <maxEffort>400.0</maxEffort>
-      <robotNamespace>bravo</robotNamespace>
-    </plugin>
-  </gazebo>
-  <gazebo>
-    <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="bravo_finger_jaws_rs2_301_jointmimic_joint_plugin">
-      <joint>bravo_axis_a</joint>
-      <mimicJoint>bravo_finger_jaws_rs2_301_joint</mimicJoint>
-      <multiplier>18.0</multiplier>
-      <offset>0</offset>
-      <sensitiveness>0.0</sensitiveness>
-      <!-- if absolute difference between setpoint and process value is below this threshold, do nothing; 0.0 = disable [rad] -->
-      <maxEffort>400.0</maxEffort>
-      <robotNamespace>bravo</robotNamespace>
-    </plugin>
-  </gazebo>
-  <!-- axis_g -->
-  <gazebo reference="bravo_axis_g">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- axis_f -->
-  <gazebo reference="bravo_axis_f">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- axis_e -->
-  <gazebo reference="bravo_axis_e">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- axis_d -->
-  <gazebo reference="bravo_axis_d">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- axis_c -->
-  <gazebo reference="bravo_axis_c">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- axis_b -->
-  <gazebo reference="bravo_axis_b">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- axis_a -->
-  <gazebo reference="bravo_axis_a">
-    <implicitSpringDamper>1</implicitSpringDamper>
-  </gazebo>
-  <!-- Links (added for all links with collision geometry -->
-  <gazebo reference="bravo_base_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-    <!-- gravity is turned off in all these links because moveit_servo + roscontrol don't have gravity compensation built in. -->
-  </gazebo>
-  <gazebo reference="bravo_1019_end_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- 1013_joint_link -->
-  <gazebo reference="bravo_1013_joint_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- 1026_0_joint_link -->
-  <gazebo reference="bravo_1026_0_joint_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- 1026_1_joint_link -->
-  <gazebo reference="bravo_1026_1_joint_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- 1023_0_joint_link -->
-  <gazebo reference="bravo_1023_0_joint_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- 1023_1_joint_link -->
-  <gazebo reference="bravo_1023_1_joint_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <gazebo reference="bravo_push_rod">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- Finger 1 -->
-  <gazebo reference="bravo_finger_jaws_rs2_300_link">
-    <material>Gazebo/Grey</material>
-    <mu1>100.0</mu1>
-    <mu2>100.0</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- Finger 2 -->
-  <gazebo reference="bravo_finger_jaws_rs2_301_link">
-    <material>Gazebo/Grey</material>
-    <mu1>100.0</mu1>
-    <mu2>100.0</mu2>
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <!-- Joint Transmissions -->
-  <transmission name="trans_bravo_axis_g">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_g">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_g_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="trans_bravo_axis_f">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_f">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_f_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="trans_bravo_axis_e">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_e">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_e_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="trans_bravo_axis_d">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_d">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_d_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="trans_bravo_axis_c">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_c">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_c_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="trans_bravo_axis_b">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_b">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_b_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="trans_bravo_axis_a">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="bravo_axis_a">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="bravo_axis_a_motor">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <gazebo>
-    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
-      <robotNamespace>bravo</robotNamespace>
-      <legacyModeNS>True</legacyModeNS>
-    </plugin>
-  </gazebo>
-  <!-- A box to emulate the depth camera -->
-  <!-- <link name="depth_cam_link">
-    <pose>0 0 0 0 0 0</pose>
-    <visual>
-      <origin rpy="0 0 0" xyz="-0.05 0 -0.02"/>
-      <geometry>
-        <box size="0.05 0.12 0.07"/>
-      </geometry>
-      <material name="Orange">
-        <color rgba="0.84 0.246 0.035 1.0"/>
-      </material>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="-0.05 0 -0.02"/>
-      <geometry>
-        <box size="0.05 0.12 0.07"/>
-      </geometry>
-    </collision>
-  </link> -->
-  <!-- workaround for rotated kinect output -->
-  <!-- https://answers.gazebosim.org/question/4266/gazebo-15-libgazebo_openni_kinectso-pointcloud-data-is-rotated-and-flipped/?answer=26388#post-id-26388 -->
-  <!-- <link name="kinect_optical_link"/>
-  <joint name="depth_cam_to_kinect_optical_link" type="fixed">
-    <parent link="depth_cam_link"/>
-    <child link="kinect_optical_link"/>
-    <origin rpy="-1.5708 0 -1.5708"/>
-  </joint>
-  <gazebo reference="depth_cam_link">
-    <static>1</static>
-    <sensor name="camera" type="depth">
-      <updateRate>30.0</updateRate>
-      <camera>
-        <horizontal_fov>1.047</horizontal_fov>
-        <image>
-          <width>300</width>
-          <height>300</height>
-          <format>R8G8B8</format>
-        </image>
-        <clip>
-          <near>0.25</near>
-          <far>100</far>
-        </clip>
-      </camera>
-      <!http://gazebosim.org/tutorials/?tut=ros_depth_camera -->
-      <!-- <plugin filename="libgazebo_ros_openni_kinect.so" name="camera_plugin">
-        <baseline>0.2</baseline>
-        <alwaysOn>true</alwaysOn>
-        <Keep this zero, update_rate in the parent <sensor> tag
-            will control the frame rate. -->
-        <!-- <updateRate>0.0</updateRate>
-        <cameraName>camera_ir</cameraName>
-        <imageTopicName>/camera/color/image_raw</imageTopicName>
-        <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
-        <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
-        <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
-        <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
-        <frameName>/kinect_optical_link</frameName>
-        <pointCloudCutoff>0.1</pointCloudCutoff>
-        <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
-        <distortionK1>0</distortionK1>
-        <distortionK2>0</distortionK2>
-        <distortionK3>0</distortionK3>
-        <distortionT1>0</distortionT1>
-        <distortionT2>0</distortionT2>
-        <CxPrime>0</CxPrime>
-        <Cx>0</Cx>
-        <Cy>0</Cy>
-        <focalLength>0</focalLength>
-        <hackBaseline>0</hackBaseline>
-      </plugin>
-    </sensor>
-  </gazebo> -->
-  <!--
-        The depth camera is mounted parallel to the jaws on the wrist, but is
-        measured from a frame coincident with bravo_1028_base_link. So we add a
-        virtual link to account for the jaw_yaw_offset roll calibration, with the
-        same origin but a slight roll.
-        -->
-  <!-- <link name="depth_cam_measurement_link"/>
-  <joint name="jaw_offset_frame" type="fixed">
-    <parent link="bravo_1023_1_joint_link"/>
-    <child link="depth_cam_measurement_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint>
-  <joint name="depth_cam_measurement" type="fixed">
-    <parent link="depth_cam_measurement_link"/>
-    <child link="depth_cam_link"/>
-    <origin rpy="1.5708 -1.5708 0" xyz="-0.006 -0.078 0.070"/>
-  </joint> -->
 </robot>
-
