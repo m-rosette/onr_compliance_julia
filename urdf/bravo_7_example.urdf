@@ -35,7 +35,7 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1019_base.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1019_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -67,21 +67,21 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1019_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1019_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1013_base.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1013_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 3.1415" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1019_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1019_end.obj"/>
       </geometry>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </collision>
@@ -106,21 +106,21 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1013_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1013_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0" xyz="0 0 0"/>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1026_0_base.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1026_0_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 3.14159" xyz="0.04600000000128156 -0.23255 0"/>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1030.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1030.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="3.14159 -0.0 0" xyz="0.046 -0.05055 0"/>
@@ -188,7 +188,7 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1026_0_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1026_0_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -208,14 +208,14 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1026_1_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1026_1_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 3.14159 0" xyz="0.0 0.0 0.0056"/>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1023_0_base.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_0_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 3.14159 0" xyz="0.0 0.0 0.0056"/>
@@ -247,7 +247,7 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1023_0_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_0_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -267,21 +267,21 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1023_1_end.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_1_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/RS2-1028.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1028.obj"/>
       </geometry>
       <material name="bravo_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0056 0"/>
     </visual>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/end_effectors/RS2-257.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-257.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
       <origin rpy="3.14159 0 1.57" xyz="0.0 0.1256 0"/>
@@ -320,14 +320,14 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/end_effectors/RS2-300.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-300.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/end_effectors/RS2-300.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-300.obj"/>
       </geometry>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </collision>
@@ -340,14 +340,14 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/end_effectors/RS2-301.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-301.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://bpl_bravo_description_real/meshes/end_effectors/RS2-301.obj"/>
+        <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-301.obj"/>
       </geometry>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </collision>
