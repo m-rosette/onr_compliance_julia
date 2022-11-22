@@ -12,6 +12,7 @@ println("Libraries imported.")
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
 urdf_file = joinpath(src_dir, "..", "urdf", "bravo_7_example.urdf")     # Arm only
+# urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_test_axis_flop.urdf")     # Arm only
 # urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_seabotix.urdf")   # Arm and Seabotix
 
 
@@ -26,7 +27,19 @@ mvis_toy = MechanismVisualizer(mechanism_toy, URDFVisuals(urdf_file), vis[:toy])
 
 # Initialize the mechanism state
 state = MechanismState(mechanism_toy)
-free_joint, joint1, joint2 = joints(mechanism_toy)
-Δt = 1e-3;
+bravo_axis_g, bravo_axis_f, bravo_axis_e, bravo_axis_d, bravo_axis_c, bravo_axis_b, bravo_axis_a, bravo_finger_jaws_rs2_300_joint, bravo_finger_jaws_rs2_301_joint = joints(mechanism_toy)
+axis_g, axis_f, axis_e, axis_d, axis_c, axis_b, axis_a, finger_jaws_300, finger_jaws_301 = joints(mechanism_toy)
+# Δt = 1e-3
+
+# set_configuration!(state, finger_jaws_300, 3)
+# set_velocity!(state, finger_jaws_300, 1.)
+
+
+# Simulation
+ts, qs, vs = simulate(state, 10., Δt = 1e-3)
+
+# Animate Trajectory
+animation = MeshCat.Animation(mvis_toy, ts, qs)
+setanimation!(mvis_toy, animation)
 
 render(mvis_toy)
