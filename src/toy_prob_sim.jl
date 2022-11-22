@@ -11,7 +11,7 @@ using onr_compliance_julia
 src_dir = dirname(pathof(onr_compliance_julia))
 # urdf_file = joinpath(src_dir, "..", "urdf", "bravo5_seabotix.urdf")
 urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_seabotix.urdf")
-# urdf_file = "C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/bpl_bravo_description_real/urdf/bravo_7_example.urdf"
+# urdf_file = "C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/bpl_bravo_description_real_test/urdf/bravo_7_example.urdf"
 
 
 println("Libraries imported.")
