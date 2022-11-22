@@ -15,7 +15,7 @@
   </material>
   <link name="world"/>
   <joint name="bravo_joint" type="fixed">
-    <origin rpy="1.5708 0 0" xyz="0 0 0"/>
+    <origin rpy="1.5709 0 0" xyz="0 0 0"/>    <!-- Old rpy="0 0 0" ________________________________________________________________-->
     <parent link="world"/>
     <child link="bravo_base_link"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -77,7 +77,7 @@
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1013_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
-      <origin rpy="0.0 -0.0 3.1415" xyz="0.0 0.0 0.0"/>
+      <origin rpy="0.0 -0.0 3.1415" xyz="0.0 0.0 0.0"/>    <!-- Old rpy="0 0 0" ________________________________________________________________-->
     </visual>
     <collision>
       <geometry>
@@ -116,14 +116,14 @@
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1026_0_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
-      <origin rpy="0.0 -0.0 3.14159" xyz="0.04600000000128156 -0.23255 0"/>
+      <origin rpy="0.0 -0.0 3.14159" xyz="0.04600000000128156 -0.23255 0"/> <!--Old: rpy="3.14159 -0.0 3.14159" xyz="0.04600000000128156 4.829533423884964e-07 -0.2325499999993592"/>-->
     </visual>
     <visual>
       <geometry>
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1030.obj"/>
       </geometry>
       <material name="bravo_black"/>
-      <origin rpy="3.14159 -0.0 0" xyz="0.046 -0.05055 0"/>
+      <origin rpy="3.14159 -0.0 0" xyz="0.046 -0.05055 0"/> <!--Old: rpy="3.14159 -0.0 3.14159" xyz="0.046 0.0 -0.05055"/>__________________________________________________________-->
     </visual>
     <collision>
       <geometry>
@@ -211,14 +211,14 @@
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1026_1_end.obj"/>
       </geometry>
       <material name="bravo_black"/>
-      <origin rpy="0.0 3.14159 0" xyz="0.0 0.0 0.0056"/>
+      <origin rpy="0.0 3.14159 0" xyz="0.0 0.0 0.0056"/> <!-- Old: rpy="0.0 0.0 3.14159" xyz="0.0 0.0 0.0"/>_________________________________________________________________-->
     </visual>
     <visual>
       <geometry>
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1023_0_base.obj"/>
       </geometry>
       <material name="bravo_black"/>
-      <origin rpy="0.0 3.14159 0" xyz="0.0 0.0 0.0056"/>
+      <origin rpy="0.0 3.14159 0.0" xyz="0.0 0.0 0.0056"/> <!-- Old: rpy="0.0 -0.0 3.14159" xyz="0.0 0.0 0.0056"/>___________________________________________________________-->
     </visual>
     <collision>
       <geometry>
@@ -277,14 +277,14 @@
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/RS2-1028.obj"/>
       </geometry>
       <material name="bravo_black"/>
-      <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0056 0"/>
+      <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0056 0.0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0056"/>_______________________________________________________________________-->
     </visual>
     <visual>
       <geometry>
         <mesh filename="C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/meshes/end_effectors/RS2-257.obj"/>
       </geometry>
       <material name="bravo_finger_jaws_black"/>
-      <origin rpy="3.14159 0 1.57" xyz="0.0 0.1256 0"/>
+      <origin rpy="3.14159 0 1.57" xyz="0.0 0.1256 0"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.0 0.0 0.1256"/>____________________________________________________-->
     </visual>
     <collision>
       <geometry>
@@ -358,7 +358,7 @@
     <parent link="bravo_base_link"/>
     <child link="bravo_1019_end_link"/>
     <axis xyz=" 0.  0. -1."/>
-    <origin rpy="0.0 0.0 3.14159" xyz="0.0665 0.08 0.0"/>
+    <origin rpy="0.0 0.0 3.14159" xyz="0.0665 0.08 0.0"/> <!-- Old: rpy="0.0 0.0 3.14159" xyz="0.0665 0.0 0.08"/>___________________________________________________-->
   </joint>
   <joint name="bravo_axis_a" type="prismatic">
     <dynamics damping="10.0" friction="0.0"/>
@@ -374,7 +374,7 @@
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_finger_jaws_rs2_300_link"/>
     <axis xyz=" 0.  0. -1."/>
-    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 -0.033"/>
+    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 -0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>-->
   </joint>
   <joint name="bravo_finger_jaws_rs2_301_joint" type="revolute">
     <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
@@ -382,7 +382,7 @@
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_finger_jaws_rs2_301_link"/>
     <axis xyz="0. 0. 1."/>
-    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 0.033"/>
+    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>-->
   </joint>
   <joint name="bravo_axis_b" type="continuous">
     <dynamics damping="10.0" friction="0.0"/>
@@ -390,7 +390,7 @@
     <parent link="bravo_1023_0_joint_link"/>
     <child link="bravo_1023_1_joint_link"/>
     <axis xyz=" 0.  0. -1."/>
-    <origin rpy="3.14159 -0.0 0" xyz="0.0408 -0.09434999999999824 0"/>
+    <origin rpy="3.14159 -0.0 0" xyz="0.0408 -0.09434999999999824 0"/> <!-- Old: rpy="3.14159 -0.0 0.6" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>____________________________-->
   </joint>
   <joint name="bravo_axis_c" type="revolute">
     <dynamics damping="10.0" friction="0.0"/>
@@ -398,7 +398,7 @@
     <parent link="bravo_1026_1_joint_link"/>
     <child link="bravo_1023_0_joint_link"/>
     <axis xyz=" 0. -1.  0."/>
-    <origin rpy="0.0 3.14159 3.14159" xyz="-0.041999999999852135 0.0634 0"/>
+    <origin rpy="0.0 3.14159 3.14159" xyz="-0.041999999999852135 0.0634 0"/> <!-- Old: rpy="0.0 -0.0 3.14159" xyz="-0.041999999999852135 1.1145077132081467e-07 0.0634"/>______________________-->
   </joint>
   <joint name="bravo_axis_d" type="revolute">
     <dynamics damping="10.0" friction="0.0"/>
@@ -406,7 +406,7 @@
     <parent link="bravo_1026_0_joint_link"/>
     <child link="bravo_1026_1_joint_link"/>
     <axis xyz=" 0.  0. -1."/>
-    <origin rpy="3.14159 -0.0 0.0" xyz="0.0408 -0.09434999999999824 0.0056"/>
+    <origin rpy="3.14159 -0.0 0.0" xyz="0.0408 -0.09434999999999824 0.0056"/> <!-- Old: rpy="3.14159 -0.0 0.0" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>______________________-->
   </joint>
   <joint name="bravo_axis_e" type="revolute">
     <dynamics damping="10.0" friction="0.0"/>
@@ -414,7 +414,7 @@
     <parent link="bravo_1013_joint_link"/>
     <child link="bravo_1026_0_joint_link"/>
     <axis xyz=" 0. -1.  0."/>
-    <origin rpy="0 0 0" xyz="0 -0.29035 0"/>
+    <origin rpy="0 0 0" xyz="0 -0.29035 0"/> <!-- Old: rpy="3.14159 -0.0 3.14159" xyz="0.0040000000018364235 7.477816037645589e-07 -0.29034999999915573"/>_____________________________________-->
   </joint>
   <joint name="bravo_axis_f" type="revolute">
     <dynamics damping="10.0" friction="0.0"/>
@@ -422,7 +422,7 @@
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
     <axis xyz=" 0. -1.  0."/>
-    <origin rpy="0.0 -0.0 3.14159" xyz="-0.046 -0.0642 0"/>
+    <origin rpy="0.0 -0.0 3.14159" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
   </joint>
   <gazebo>
     <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="bravo_finger_jaws_rs2_300_jointmimic_joint_plugin">
