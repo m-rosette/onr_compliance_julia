@@ -1,0 +1,3 @@
+[submodule "bpl_bravo_description_real"]
+	path = bpl_bravo_description_real
+	url = https://gitlab.com/rsa-manipulation-testbed/bpl_bravo_description_real.git
