@@ -18,24 +18,33 @@ urdf_file = joinpath(src_dir, "..", "urdf", "bravo_7_example.urdf")     # Arm on
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_toy = parse_urdf(urdf_file; gravity = [0.0, 0.0, -9.81])
+mechanism_toy = parse_urdf(urdf_file) # gravity Default: = [0.0, 0.0, -9.81])
 
 delete!(vis)
 visuals = URDFVisuals(urdf_file)
 mvis_toy = MechanismVisualizer(mechanism_toy, URDFVisuals(urdf_file), vis[:toy])
 # render(mvis_toy)
 
-# Initialize the mechanism state
+# Initialize the mechanism state -------------------------------------
 state = MechanismState(mechanism_toy)
-bravo_axis_g, bravo_axis_f, bravo_axis_e, bravo_axis_d, bravo_axis_c, bravo_axis_b, bravo_axis_a, bravo_finger_jaws_rs2_300_joint, bravo_finger_jaws_rs2_301_joint = joints(mechanism_toy)
-axis_g, axis_f, axis_e, axis_d, axis_c, axis_b, axis_a, finger_jaws_300, finger_jaws_301 = joints(mechanism_toy)
-# Δt = 1e-3
 
-# set_configuration!(state, finger_jaws_300, 3)
-# set_velocity!(state, finger_jaws_300, 1.)
+# Initialize the joints from URDF
+    # List goes down the arm chain starting at the base of the bravo
+axis_g, axis_f, axis_e, axis_d, axis_c, axis_b, axis_a, finger_jaws_300,
+ finger_jaws_301 = joints(mechanism_toy)
+
+joint_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+joint_vel_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+function reset_to_equilibrium(state)
+    set_configuration!(state, joint_config)
+    set_velocity!(state, joint_vel_config)
+end
 
 
-# Simulation
+# Simulation ---------------------------------------------------------
+reset_to_equilibrium(state)
+
 ts, qs, vs = simulate(state, 10., Δt = 1e-3)
 
 # Animate Trajectory
@@ -43,3 +52,4 @@ animation = MeshCat.Animation(mvis_toy, ts, qs)
 setanimation!(mvis_toy, animation)
 
 render(mvis_toy)
+
