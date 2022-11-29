@@ -22,7 +22,7 @@ mechanism_toy = parse_urdf(urdf_file) # gravity Default: = [0.0, 0.0, -9.81])
 
 delete!(vis)
 visuals = URDFVisuals(urdf_file)
-mvis_toy = MechanismVisualizer(mechanism_toy, URDFVisuals(urdf_file), vis[:toy])
+mvis_toy = MechanismVisualizer(mechanism_toy, visuals, vis[:toy])
 # render(mvis_toy)
 
 # Initialize the mechanism state -------------------------------------
@@ -30,11 +30,11 @@ state = MechanismState(mechanism_toy)
 
 # Initialize the joints from URDF
     # List goes down the arm chain starting at the base of the bravo
-axis_g, axis_f, axis_e, axis_d, axis_c, axis_b, axis_a, finger_jaws_300,
- finger_jaws_301 = joints(mechanism_toy)
+# axis_g, axis_f, axis_e, axis_d, axis_c, axis_b, axis_a, finger_jaws_300,
+#  finger_jaws_301 = joints(mechanism_toy)
 
-joint_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-joint_vel_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+# joint_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+# joint_vel_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 function reset_to_equilibrium(state)
     set_configuration!(state, joint_config)
@@ -43,7 +43,7 @@ end
 
 
 # Simulation ---------------------------------------------------------
-reset_to_equilibrium(state)
+# reset_to_equilibrium(state)
 
 ts, qs, vs = simulate(state, 10., Δt = 1e-3)
 
