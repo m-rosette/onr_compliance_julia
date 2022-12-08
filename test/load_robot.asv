@@ -48,14 +48,14 @@ show(bravo,q(:,firstCollisionIdx));
 % exampleHelperHighlightCollisionBodies(bravo,configCollisionPairs{firstCollisionIdx}+1,gca);
 
 
-% newStartConfig = wrapToPi(startConfig);
-% q = trapveltraj([newStartConfig goalConfig],100,'EndTime',3);
-% 
-% isConfigInCollision = false(100,1);
-% configCollisionPairs = cell(100,1);
-% for i = 1:length(q)
-%     isColliding = checkCollision(bravo,q(:,i),'Exhaustive','on','SkippedSelfCollisions','parent');
-%     isConfigInCollision(i) = isColliding;
-% end
-% 
-% any(isConfigInCollision)
+newStartConfig = wrapToPi(startConfig);
+q = trapveltraj([newStartConfig goalConfig],100,'EndTime',3);
+
+isConfigInCollision = false(100,1);
+configCollisionPairs = cell(100,1);
+for i = 1:length(q)
+    isColliding = checkCollision(bravo,q(:,i),'Exhaustive','on','SkippedSelfCollisions','parent');
+    isConfigInCollision(i) = isColliding;
+end
+
+any(isConfigInCollision)
