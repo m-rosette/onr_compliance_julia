@@ -43,7 +43,7 @@ axis_g, axis_f, axis_e, axis_d, axis_c, axis_b, axis_a, finger_jaws_300,
 # finger_300 = Need to figure out how it translates to j1
 # finger_301 = Need to figure out how it translates to j1
 
-joint_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+joint_config = [0, 0, 3.14, 0, 0, 0, 0, 0, 0]
 joint_vel_config = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 function reset_to_equilibrium(state)
@@ -63,8 +63,8 @@ ts, qs, vs = simulate(state, 10., Δt = 1e-3)
 # end
 
 # Animate Trajectory
-# animation = MeshCat.Animation(mvis_toy, ts, qs)
-# setanimation!(mvis_toy, animation)
+animation = MeshCat.Animation(mvis_toy, ts, qs)
+setanimation!(mvis_toy, animation)
 
-# render(mvis_toy)
+render(mvis_toy)
 
