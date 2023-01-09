@@ -360,7 +360,7 @@
     <axis xyz=" 0.  0. -1."/>
     <origin rpy="0.0 0.0 3.14159" xyz="0.0665 0.0 0.08"/>
   </joint>
-  <joint name="bravo_axis_a" type="prismatic">
+  <joint name="bravo_axis_a" type="fixed">
     <dynamics damping="10.0" friction="0.0"/>
     <limit effort="1000.0" lower="0.0" upper="0.035" velocity="10.0"/>
     <parent link="bravo_1023_1_joint_link"/>
