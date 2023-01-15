@@ -368,7 +368,7 @@
     <axis xyz="0. 0. 1."/>
     <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="-8.669411487068951e-07 0.008999999958245167 0.12560000008350966"/>
   </joint>
-  <joint name="bravo_finger_jaws_rs2_300_joint" type="revolute">
+  <joint name="bravo_finger_jaws_rs2_300_joint" type="fixed">
     <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
     <mimic joint="bravo_axis_a" multiplier="18.0" offset="0.0"/>
     <parent link="bravo_1023_1_joint_link"/>
@@ -376,7 +376,7 @@
     <axis xyz=" 0.  0. -1."/>
     <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>
   </joint>
-  <joint name="bravo_finger_jaws_rs2_301_joint" type="revolute">
+  <joint name="bravo_finger_jaws_rs2_301_joint" type="fixed">
     <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
     <mimic joint="bravo_finger_jaws_rs2_300_joint" multiplier="1.0" offset="0.0"/>
     <parent link="bravo_1023_1_joint_link"/>
