@@ -1,0 +1,102 @@
+<!-- This URDF is modified from the original source of https://github.com/tanay-bits/twolink/blob/master/urdf/2link_robot.urdf -->
+
+<robot name="2link_robot">
+
+	<!-- Body Colors -->
+	<material name="blue">
+		<color rgba="0 0 0.8 1"/>
+	</material>
+	<material name="green">
+		<color rgba="0 0.8 0 1"/>
+	</material>
+	<material name="red">
+		<color rgba="0.8 0 0 1"/>
+	</material>
+
+	<!-- Base -->
+	<link name="base"/>
+
+	<!-- Arm 1 -->
+	<link name="arm_1">
+		<visual>
+			<geometry>
+				<box size="1 .15 .15"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.5 0 0"/>
+			<material name="blue"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="1 .15 .15"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.5 0 0"/>
+		</collision>
+	</link>
+
+	<joint name="joint_1" type="revolute">
+		<axis rpy="0 0 0" xyz="0 0 1"/>
+		<limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
+		<parent link="base"/>
+		<child link="arm_1"/>
+	</joint>
+
+	<!-- Arm 2 -->
+	<link name="arm_2">
+		<visual>
+			<geometry>
+				<box size="1 .15 .15"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.5 0 0"/>
+			<material name="green"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="1 .15 .15"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.5 0 0"/>
+		</collision>
+	</link>
+
+	<joint name="joint_2" type="revolute">
+		<axis rpy="0 0 0" xyz="0 0 1"/>
+		<limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
+		<parent link="arm_1"/>
+		<child link="arm_2"/>
+		<origin rpy="0 0 0" xyz="1 0 0"/>
+	</joint>
+
+	<!-- Arm 3 -->
+	<link name="arm_3">
+		<visual>
+			<geometry>
+				<box size="1 .15 .15"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.5 0 0"/>
+			<material name="red"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="1 .15 .15"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.5 0 0"/>
+		</collision>
+	</link>
+
+	<joint name="joint_3" type="revolute">
+		<axis rpy="0 0 0" xyz="0 0 1"/>
+		<limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
+		<parent link="arm_2"/>
+		<child link="arm_3"/>
+		<origin rpy="0 0 0" xyz="1 0 0"/>
+	</joint>
+
+	<!-- End Effector -->
+	<link name="end_effector"/>
+
+	<joint name="ee_joint" type="fixed">
+		<parent link="arm_3"/>
+		<child link="end_effector"/>
+		<origin rpy="0 0 0" xyz="1 0 0"/>
+	</joint>
+
+</robot>
