@@ -11,9 +11,18 @@ println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "bravo_7_example.urdf")     # Arm only
+# test
+# urdf_file = joinpath(src_dir, "..", "urdf", "bravo_7_example.urdf")     # Arm only
 # urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_test_axis_flop.urdf")     # Arm only
 # urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_seabotix.urdf")   # Arm and Seabotix
+
+# urdf_file = joinpath(src_dir, "..", "urdf", "bravo5_seabotix.urdf")
+urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_seabotix.urdf")
+# urdf_file = "C:/Users/marcu/OneDrive/Documents/GitHub/onr_compliance_julia/bpl_bravo_description_real_test/urdf/bravo_7_example.urdf"
+
+
+println("Libraries imported.")
+# main
 
 
 # Visualizer ---------------------------------------------------------
