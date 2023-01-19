@@ -369,20 +369,24 @@
     <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="-8.669411487068951e-07 0.008999999958245167 0.12560000008350966"/>
   </joint>
   <joint name="bravo_finger_jaws_rs2_300_joint" type="fixed">
+    <!-- Changed joint type to "fixed" to eliminate looping through another dimension -->
     <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
     <mimic joint="bravo_axis_a" multiplier="18.0" offset="0.0"/>
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_finger_jaws_rs2_300_link"/>
     <axis xyz=" 0.  0. -1."/>
-    <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>
+    <origin rpy="-1.5707 -1.8357 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>
+      <!-- Subtracted 0.265 to the y origin rotation to eliminate finger collision -->
   </joint>
   <joint name="bravo_finger_jaws_rs2_301_joint" type="fixed">
+    <!-- Changed joint type to "fixed" to eliminate looping through another dimension -->
     <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
     <mimic joint="bravo_finger_jaws_rs2_300_joint" multiplier="1.0" offset="0.0"/>
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_finger_jaws_rs2_301_link"/>
     <axis xyz="0. 0. 1."/>
-    <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>
+    <origin rpy="-1.5707 -1.3057 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>
+    <!-- Added 0.265 to the y origin rotation to eliminate finger collision -->
   </joint>
   <joint name="bravo_axis_b" type="continuous">
     <dynamics damping="10.0" friction="0.0"/>
