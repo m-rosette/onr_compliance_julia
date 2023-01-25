@@ -6,20 +6,13 @@ clear
 clc
 
 % Create Robot Representation
-bravo = importrobot('bravo7.urdf', DataFormat='column');
-% bravo = importrobot('iiwa14.urdf', DataFormat='column');
-
-% jaws = importrobot('jaws_test.urdf', DataFormat='column');
-
-
+bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
 
 % Generate Trajectory and Check for Collisions
-startConfig = [pi, pi/2, pi, 0, pi, 0]'; % For bravo arm 
-% startConfig = [0 -pi/4 pi 3*pi/2 0 -pi/2 pi/8]'; % For iiwa arm 
+startConfig = [0, pi, pi]';
 
-% startConfig = [pi/2, pi/2]'; % For jaws
-    
-is_self_collide = checkCollision(bravo, startConfig, 'SkippedSelfCollisions', 'parent');
 % If the two geometries are in collision, is_self_collide is 1. Otherwise, the value is 0
+is_self_collide = checkCollision(bravo, startConfig, 'SkippedSelfCollisions', 'parent');
 
+% Display the URDF
 show(bravo, startConfig,'visuals','on','collision','off')
