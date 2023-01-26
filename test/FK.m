@@ -45,45 +45,48 @@ S5 = [0, 1, 0, c-d, 0, e];
 S6 = [0, 0, 1, 0, -e, 0];
 S7 = [0, 0, 0, 0, 0, 1];     % End-effector prismatic joint 
 
-% screw_axes = [S1; S2; S3; S4; S5; S6; S7];  % Collecting all screw axes in one array
-screw_axes = [S2; S3; S5];
+screw_axes = [S1; S2; S3; S4; S5; S6; S7];  % Collecting all screw axes in one array
+% screw_axes = [S2; S3; S5];
 
 % --------------------- NEED TO MAKE THE PROD OF EXP AND MAT EXP FUNCTION CAPABLE OF
 % HANDLING LARGE THETA DATASET -----------------------------------------
 
-function T = matrix_exponential(screw_axis, theta)
-    % """ Calculate the homogeneous transformation for a set of exponential coordinates
-    % input: screw axis
-    % input: theta (rads)
-    % return: T - homogeneous transformation matrix
-    % """
-    T = zeros(4); % Initialize transformation matrix
+% Need to implement all screw axesin prod of exp function
+% Meaning that extra columns of zeros are needed in theta_list for all
+% joints that are "fixed"
 
-    w_skew = [0 -screw_axis(3) screw_axis(2); screw_axis(3) 0 -screw_axis(1); -screw_axis(2) screw_axis(1) 0];
-    v = [screw_axis(4); screw_axis(5); screw_axis(6)];
-    R = eye(3) + sin(theta) * w_skew + (1 - cos(theta)) * w_skew^2;
-    p = (eye(3) * theta + (1 - cos(theta)) * w_skew + (theta - sin(theta)) * w_skew^2) * v;
-    T(1:3, 1:3) = R;
-    T(1:3, 4) = p;
-    T(4, :) = [0 0 0 1];
-end
+% when passing the theta list into prod_of_exp need to pass in one row at a
+% time
+
+% Load in Data File
+file = load("Collision Data Storage\thetas_test_Jan26.mat");
+
+file.all_joint_thetas = [zeros(length(file.collision_free_angles), 1) file.collision_free_angles(:, 1:2) ...
+    zeros(length(file.collision_free_angles), 1) file.collision_free_angles(:, 3) zeros(length(file.collision_free_angles), 1) ...
+    zeros(length(file.collision_free_angles), 1)];
 
 
-function T_prod_exp = product_of_exp(M, screw_axes_list, theta_list)
-    % """ Product of Exponentials
-    % input: zero configuration transformation matrix
-    % input: List of all screw axis in arm
-    % input: List of joint angles
-    % return: Updated transformation matrix
-    % """
-    % Check list length compatibility
-    if length(screw_axes_list) ~= length(theta_list)
-        error("Screw axis list should be the same length as theta list")
+
+% Loop through all prod of exp from file and append end effector points
+tic
+for theta_row = 1:length(file.all_joint_thetas)
+    if ~mod(theta_row,100)
+        elapsedTime = toc;
+        estimatedTime = elapsedTime*length(file.all_joint_thetas)/theta_row;
+        ETA = estimatedTime - elapsedTime;
+        disp(['ETA: ',num2str(ETA/60),' minutes']);
     end
 
-    T_prod_exp = M;
-    for i = 1:lenth(screw_axes_list)
-        T_temp = matrix_exponential(screw_axes_list(i), theta_list(i)) * T_prod_exp;
-        T_prod_exp = T_temp;
-    end
+
+    file.ee_points(theta_row, :) = product_of_exp(M, screw_axes, file.all_joint_thetas(theta_row, :));
 end
+toc
+
+
+
+
+
+
+
+
+
