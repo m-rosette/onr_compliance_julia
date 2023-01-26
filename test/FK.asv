@@ -48,8 +48,6 @@ S7 = [0, 0, 0, 0, 0, 1];     % End-effector prismatic joint
 % screw_axes = [S1; S2; S3; S4; S5; S6; S7];  % Collecting all screw axes in one array
 screw_axes = [S2; S3; S5];
 
-% --------------------- NEED TO MAKE THE PROD OF EXP AND MAT EXP FUNCTION CAPABLE OF
-% HANDLING LARGE THETA DATASET -----------------------------------------
 
 function T = matrix_exponential(screw_axis, theta)
     % """ Calculate the homogeneous transformation for a set of exponential coordinates
@@ -66,24 +64,4 @@ function T = matrix_exponential(screw_axis, theta)
     T(1:3, 1:3) = R;
     T(1:3, 4) = p;
     T(4, :) = [0 0 0 1];
-end
-
-
-function T_prod_exp = product_of_exp(M, screw_axes_list, theta_list)
-    % """ Product of Exponentials
-    % input: zero configuration transformation matrix
-    % input: List of all screw axis in arm
-    % input: List of joint angles
-    % return: Updated transformation matrix
-    % """
-    % Check list length compatibility
-    if length(screw_axes_list) ~= length(theta_list)
-        error("Screw axis list should be the same length as theta list")
-    end
-
-    T_prod_exp = M;
-    for i = 1:lenth(screw_axes_list)
-        T_temp = matrix_exponential(screw_axes_list(i), theta_list(i)) * T_prod_exp;
-        T_prod_exp = T_temp;
-    end
 end

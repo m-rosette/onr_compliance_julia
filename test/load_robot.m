@@ -9,7 +9,7 @@ clc
 bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
 
 % Generate Trajectory and Check for Collisions
-startConfig = [0, pi, pi]';
+startConfig = [pi, pi, pi]';
 
 % If the two geometries are in collision, is_self_collide is 1. Otherwise, the value is 0
 is_self_collide = checkCollision(bravo, startConfig, 'SkippedSelfCollisions', 'parent');
