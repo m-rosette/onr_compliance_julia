@@ -70,11 +70,13 @@ file.all_joint_thetas = [zeros(length(file.collision_free_angles), 1) file.colli
 % Loop through all prod of exp from file and append end effector points
 tic
 for theta_row = 1:length(file.all_joint_thetas)
-    if ~mod(theta_row,100)
+    if ~mod(theta_row,10000)
         elapsedTime = toc;
-        estimatedTime = elapsedTime*length(file.all_joint_thetas)/theta_row;
-        ETA = estimatedTime - elapsedTime;
-        disp(['ETA: ',num2str(ETA/60),' minutes']);
+%         estimatedTime = length(file.all_joint_thetas)/theta_row;
+%         disp(estimatedTime)
+        disp(theta_row/length(file.all_joint_thetas));
+%         ETA = estimatedTime - elapsedTime;
+%         disp(['ETA: ',num2str(ETA/60),' minutes']);
     end
 
 
