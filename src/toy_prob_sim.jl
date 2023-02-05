@@ -11,9 +11,9 @@ println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_obj.urdf")     # Arm only
+# urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_obj.urdf")     # Arm only
 # urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_test_axis_flop.urdf")     # Arm only
-# urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_seabotix.urdf")   # Arm and Seabotix
+urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_seabotix.urdf")   # Arm and Seabotix
 
 
 # Visualizer ---------------------------------------------------------
@@ -31,7 +31,7 @@ state = MechanismState(mechanism_toy)
 # Joints for planar example
 jount1, joint2, joint3 = joints(mechanism_toy)
 
-joint_config = [1, 0, 0]
+joint_config = [0, 0, 0]
 joint_vel_config = [0, 0, 0]
 
 function reset_to_equilibrium(state)
@@ -47,8 +47,8 @@ ts, qs, vs = simulate(state, 10., Δt = 1e-3)
 # Animate Trajectory
 animation = MeshCat.Animation(mvis_toy, ts, qs)
 setanimation!(mvis_toy, animation)
-
+println(center_of_mass(state))
 render(mvis_toy)
 
-center_of_mass(state)
+
 
