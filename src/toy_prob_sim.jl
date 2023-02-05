@@ -40,14 +40,49 @@ function reset_to_equilibrium(state)
 end
 
 # Simulation ---------------------------------------------------------
-reset_to_equilibrium(state)
+# reset_to_equilibrium(state)
 
-ts, qs, vs = simulate(state, 10., Δt = 1e-3)
+# ts = time vector, qs = configuration vector, vs, velocity vector
+# ts, qs, vs = simulate(state, 10., Δt = 1e-3)
+# println(typeof(qs))
+
+range_length = 10
+time = LinRange(0, 1, range_length)
+config1 = LinRange(0, -3*pi/4, range_length)
+config2 = LinRange(0, pi/2, range_length)
+config3 = LinRange(0, pi/4, range_length)
+test_config = []
+
+frame_step = 5
+animation = MeshCat.Animation()
+for i in 1:range_length
+    if i == 1
+        MeshCat.atframe(animation, i) do 
+            set_configuration!(mvis_toy, [config1[i], config2[i], config3[i]])
+        end
+    else
+        MeshCat.atframe(animation, i * frame_step) do 
+            set_configuration!(mvis_toy, [config1[i], config2[i], config3[i]])
+        end
+    end
+end
+
+# MeshCat.atframe(animation, 0) do 
+#     set_configuration!(mvis_toy, [0, 0, 0])
+# end
+
+# MeshCat.atframe(animation, 15) do 
+#     set_configuration!(mvis_toy, [-pi/2, pi/4, pi/4])
+# end
+
+# MeshCat.atframe(animation, 30) do 
+#     set_configuration!(mvis_toy, [pi, 0, pi/2])
+# end
 
 # Animate Trajectory
-animation = MeshCat.Animation(mvis_toy, ts, qs)
+# animation = MeshCat.Animation(mvis_toy, ts, qs)
+# animation = MeshCat.Animation(mvis_toy, time, test_config)
 setanimation!(mvis_toy, animation)
-println(center_of_mass(state))
 render(mvis_toy)
 
 
