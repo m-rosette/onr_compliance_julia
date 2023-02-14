@@ -18,18 +18,37 @@ urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_seabotix.urdf")   # A
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_toy = parse_urdf(urdf_file) # gravity Default: = [0.0, 0.0, -9.81])
+mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, -10.0]) # gravity Default: = [0.0, 0.0, -9.81])
 
 delete!(vis)
-visuals = URDFVisuals(urdf_file)
-mvis_toy = MechanismVisualizer(mechanism_toy, visuals, vis[:toy])
-# render(mvis_toy)
 
-# Initialize the mechanism state -------------------------------------
-state = MechanismState(mechanism_toy)
+# Visulaize the URDFs
+mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo])
+
+
 
 # Joints for planar example
-jount1, joint2, joint3 = joints(mechanism_toy)
+# joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
+vehicle_joint, joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
+
+vehicle_body, arm_base, body1_1013, body2_1026, body3_1023 = bodies(mechanism_bravo_vehicle)
+# vehicle_body = main body mesh
+# arm_base = base of the arm
+# body1_1013 = 
+
+body_frame = default_frame(vehicle_body)
+body_arm_base = default_frame(arm_base)
+body1_frame = default_frame(body1_1013)
+body2_frame = default_frame(body2_1026)
+body3_frame = default_frame(body3_1023)
+base_frame = root_frame(mechanism_bravo_vehicle)
+
+
+frame_names_cob = [""]
+
+
+# Initialize the mechanism state -------------------------------------
+state = MechanismState(mechanism_bravo_vehicle)
 
 joint_config = [0, 0, 0]
 joint_vel_config = [0, 0, 0]
@@ -40,11 +59,7 @@ function reset_to_equilibrium(state)
 end
 
 # Simulation ---------------------------------------------------------
-# reset_to_equilibrium(state)
-
-# ts = time vector, qs = configuration vector, vs, velocity vector
-# ts, qs, vs = simulate(state, 10., Δt = 1e-3)
-# println(typeof(qs))
+reset_to_equilibrium(state)
 
 range_length = 10
 time = LinRange(0, 1, range_length)
@@ -53,37 +68,29 @@ config2 = LinRange(0, pi/2, range_length)
 config3 = LinRange(0, pi/4, range_length)
 test_config = []
 
-frame_step = 5
+frame_step = 10
 animation = MeshCat.Animation()
 for i in 1:range_length
     if i == 1
         MeshCat.atframe(animation, i) do 
-            set_configuration!(mvis_toy, [config1[i], config2[i], config3[i]])
+            set_configuration!(mvis, vehicle_joint, [1, 0, 0, 0, 0, 0, 0])
+            set_configuration!(mvis, joint1, config1[i])
+            set_configuration!(mvis, joint2, config2[i])
+            set_configuration!(mvis, joint3, config3[i])
         end
     else
         MeshCat.atframe(animation, i * frame_step) do 
-            set_configuration!(mvis_toy, [config1[i], config2[i], config3[i]])
+            set_configuration!(mvis, vehicle_joint, [1, 0, 0, 0, 0, 0, 0])
+            set_configuration!(mvis, joint1, config1[i])
+            set_configuration!(mvis, joint2, config2[i])
+            set_configuration!(mvis, joint3, config3[i])
         end
     end
 end
 
-# MeshCat.atframe(animation, 0) do 
-#     set_configuration!(mvis_toy, [0, 0, 0])
-# end
 
-# MeshCat.atframe(animation, 15) do 
-#     set_configuration!(mvis_toy, [-pi/2, pi/4, pi/4])
-# end
-
-# MeshCat.atframe(animation, 30) do 
-#     set_configuration!(mvis_toy, [pi, 0, pi/2])
-# end
-
-# Animate Trajectory
-# animation = MeshCat.Animation(mvis_toy, ts, qs)
-# animation = MeshCat.Animation(mvis_toy, time, test_config)
-setanimation!(mvis_toy, animation)
-render(mvis_toy)
+setanimation!(mvis, animation)
+render(mvis)
 
 
 

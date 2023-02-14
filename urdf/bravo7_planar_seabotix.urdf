@@ -9,8 +9,11 @@
   <!-- ======================================= -->
   <!-- - - - - - - - MATERIALS - - - - - - - - -->
   <!-- ======================================= -->
-    <material name="alpha_black">
-      <color rgba="0.6 0.6 0.6 1"/>
+    <material name="bravo_black">
+      <color rgba="0.3 0.3 0.3 1. "/>
+    </material>
+    <material name="bravo_finger_jaws_black">
+      <color rgba="0.3 0.3 0.3 1. "/>
     </material>
     <material name="green_v">
       <color rgba="0.5 0.9 0.3 1"/>
@@ -49,7 +52,6 @@
       <material name="green_v"/>
       <!-- <origin rpy="1.57075 0 0" xyz="0 0 0"/> -->
       <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
-      <!-- <material name="alpha_black"/> -->
     </visual>
     <!-- Actual *not added* -->
     <!-- <inertial> -->
@@ -69,8 +71,6 @@
       iyy="10.15" iyz="0.0" 
       izz="3.93"/>
     </inertial>
-    
-    
   </link>
 
 <!-- IF YOU EVER ADD MORE LINKS, MAKE SURE TO CHANGE THE BUOYANCY FRAME VECTOR FOR THE ARM BASE FRAME!!! -->
@@ -331,35 +331,17 @@
       <origin rpy="0 1.57579632679 0" xyz="-0.05 0 -0.18"/>
     </joint>
 
-  <joint name="arm_to_vehicle" type="fixed">
-    <origin rpy="0 0 0" xyz=".325 0 -.09"/>
-    <parent link="vehicle_base_link"/>
-    <child link="world"/>
-  </joint>
+
 <!-- ======================================= -->
 <!--               BRAVO LINKS               -->
 <!-- ======================================= -->
-
-  <material name="bravo_black">
-    <color rgba="0.3 0.3 0.3 1. "/>
-  </material>
-  <material name="bravo_finger_jaws_black">
-    <color rgba="0.3 0.3 0.3 1. "/>
-  </material>
-  <link name="world"/>
   <joint name="bravo_joint" type="fixed">
-    <origin rpy="1.57079 0 0" xyz="0 0 0"/>    <!-- Old rpy="0 0 0" ________________________________________________________________-->
-    <parent link="world"/>
+    <origin rpy="1.57079 0 0" xyz=".325 0 -.09"/>    <!-- Old rpy="0 0 0" ________________________________________________________________-->
+    <parent link="vehicle_base_link"/>
     <child link="bravo_base_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
     <dynamics damping="10.0" friction="0.0"/>
   </joint>
-  <link name="ee_link"/>
-  <joint name="ee_link_joint" type="fixed">
-    <parent link="bravo_1023_1_joint_link"/>
-    <child link="ee_link"/>
-    <origin rpy="0 0 -1.5707" xyz="0 0 0.120"/>
-  </joint>
+
   <link name="bravo_base_link">
     <inertial>
       <mass value="1.25"/>
@@ -392,6 +374,17 @@
       <origin rpy="0.0 0.0 0.0" xyz="0.0665 0.0 0.0415"/>
     </collision>
   </link>
+
+  <!-- Changed bravo_axis_g to fixed -->
+  <joint name="bravo_axis_g" type="fixed">  
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
+    <parent link="bravo_base_link"/>
+    <child link="bravo_1019_end_link"/>
+    <axis xyz=" 0. -1. 0."/>
+    <origin rpy="0.0 0.0 3.14159" xyz="0.0665 0.08 0.0"/> <!-- Old: rpy="0.0 0.0 3.14159" xyz="0.0665 0.0 0.08"/>___________________________________________________-->
+  </joint>
+
   <link name="bravo_1019_end_link">
     <inertial>
       <mass value="1.55"/>
@@ -431,6 +424,16 @@
       <origin rpy="1.5707 -0.0 0.0" xyz="0.048 0.0 0.0642"/>
     </collision>
   </link>
+
+  <joint name="bravo_axis_f" type="revolute">
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
+    <parent link="bravo_1019_end_link"/>
+    <child link="bravo_1013_joint_link"/>
+    <axis xyz=" 0. 0. -1."/>
+    <origin rpy="0.0 -0.0 3.14159" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
+  </joint>
+
   <link name="bravo_1013_joint_link">
     <inertial>
       <mass value="1.14"/>
@@ -513,6 +516,16 @@
       <origin rpy="3.14159 -0.0 3.14159" xyz="0.04600000000117476 4.427071420697953e-07 -0.21738329999941264"/>
     </collision>
   </link>
+
+  <joint name="bravo_axis_e" type="revolute">
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
+    <parent link="bravo_1013_joint_link"/>
+    <child link="bravo_1026_0_joint_link"/>
+    <axis xyz=" 0. 0. -1."/>
+    <origin rpy="0 -0.075 0" xyz="0.0040000000018364235 -0.29034 0"/> <!-- Old: rpy="3.14159 -0.0 3.14159" xyz="0.0040000000018364235 7.477816037645589e-07 -0.29034999999915573"/>_____________________________________-->
+  </joint>
+
   <link name="bravo_1026_0_joint_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.017 -0.026 -0.002"/>
@@ -533,6 +546,17 @@
       <origin rpy="0.0 0.0 0.0" xyz="0.0408 0.0 -0.05385"/>
     </collision>
   </link>
+
+  <!-- Changed bravo_axis_d to fixed -->
+  <joint name="bravo_axis_d" type="fixed">
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
+    <parent link="bravo_1026_0_joint_link"/>
+    <child link="bravo_1026_1_joint_link"/>
+    <axis xyz=" 0.  0. -1."/>
+    <origin rpy="3.14159 0.1 0.0" xyz="0.0408 -0.09434999999999824 0.001"/> <!-- Old: rpy="3.14159 -0.0 0.0" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>____________________SEEMS TO BE PART OF THE PROBLEM OF MISSALIGNMENT__-->
+  </joint>
+
   <link name="bravo_1026_1_joint_link">
     <inertial>
       <mass value="1.03"/>
@@ -572,6 +596,16 @@
       <origin rpy="1.5707 -0.0 3.14159" xyz="-0.040799999999856354 1.082664635687914e-07 0.0634"/>
     </collision>
   </link>
+
+  <joint name="bravo_axis_c" type="revolute">
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="500.0" lower="0.0" upper="3.2" velocity="3.0"/>
+    <parent link="bravo_1026_1_joint_link"/>
+    <child link="bravo_1023_0_joint_link"/>
+    <axis xyz=" 0. 0. -1."/>
+    <origin rpy="0.0 3.06659 3.14159" xyz="-0.041999999999852135 0.058 0.005"/> <!-- Old: rpy="0.0 -0.0 3.14159" xyz="-0.041999999999852135 1.1145077132081467e-07 0.0634"/>______________________-->
+  </joint>
+
   <link name="bravo_1023_0_joint_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.003 -0.098"/>
@@ -592,6 +626,17 @@
       <origin rpy="0.0 0.0 0.0" xyz="0.0408 0.0 -0.05385"/>
     </collision>
   </link>
+
+  <!-- Changed bravo_axis_b to fixed -->
+  <joint name="bravo_axis_b" type="fixed">
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
+    <parent link="bravo_1023_0_joint_link"/>
+    <child link="bravo_1023_1_joint_link"/>
+    <axis xyz=" 0.  0. -1."/>
+    <origin rpy="3.14159 -0.0 0" xyz="0.0408 -0.09434999999999824 0"/> <!-- Old: rpy="3.14159 -0.0 0.6" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>____________________________-->
+  </joint>
+
   <link name="bravo_1023_1_joint_link">
     <inertial>
       <origin xyz="0.0 0.003 -0.098"/>
@@ -638,13 +683,46 @@
       <origin rpy="-9.632679489654805e-05 -9.631751559834678e-05 -1.5706999907215955" xyz="9.632679474766714e-07 0.0 0.13559999995360572"/>
     </collision>
   </link>
+
+  <!-- <joint name="bravo_axis_a" type="fixed">
+    <dynamics damping="10.0" friction="0.0"/>
+    <limit effort="1000.0" lower="0.0" upper="0.035" velocity="10.0"/>
+    <parent link="bravo_1023_1_joint_link"/>
+    <child link="bravo_push_rod"/>
+    <axis xyz="0. 0. 1."/>
+    <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="-8.669411487068951e-07 0.008999999958245167 0.12560000008350966"/>
+  </joint>
+
   <link name="bravo_push_rod">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
       <mass value="0.1"/>
       <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
     </inertial>
-  </link>
+  </link> -->
+
+  <joint name="bravo_finger_jaws_rs2_300_joint" type="fixed">
+    <!-- Changed joint type to "fixed" to eliminate looping through another dimension -->
+    <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
+    <mimic joint="bravo_axis_a" multiplier="18.0" offset="0.0"/>
+    <parent link="bravo_1023_1_joint_link"/>
+    <child link="bravo_finger_jaws_rs2_300_link"/>
+    <axis xyz=" 0.  0. -1."/>
+    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 -0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>-->
+      <!-- Subtracted 0.265 to the y origin rotation to eliminate finger collision -->
+  </joint>
+
+  <joint name="bravo_finger_jaws_rs2_301_joint" type="fixed">
+    <!-- Changed joint type to "fixed" to eliminate looping through another dimension -->
+    <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
+    <mimic joint="bravo_finger_jaws_rs2_300_joint" multiplier="1.0" offset="0.0"/>
+    <parent link="bravo_1023_1_joint_link"/>
+    <child link="bravo_finger_jaws_rs2_301_link"/>
+    <axis xyz="0. 0. 1."/>
+    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>-->
+    <!-- Added 0.265 to the y origin rotation to eliminate finger collision -->
+  </joint>
+
   <link name="bravo_finger_jaws_rs2_300_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.05 0.0 0.0"/>
@@ -665,6 +743,7 @@
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
     </collision>
   </link>
+
   <link name="bravo_finger_jaws_rs2_301_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.05 0.0 0.0"/>
@@ -686,83 +765,12 @@
     </collision>
   </link>
 
-  <!-- Changed bravo_axis_g to fixed -->
-  <joint name="bravo_axis_g" type="fixed">  
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
-    <parent link="bravo_base_link"/>
-    <child link="bravo_1019_end_link"/>
-    <axis xyz=" 0. -1. 0."/>
-    <origin rpy="0.0 0.0 3.14159" xyz="0.0665 0.08 0.0"/> <!-- Old: rpy="0.0 0.0 3.14159" xyz="0.0665 0.0 0.08"/>___________________________________________________-->
-  </joint>
-  <joint name="bravo_axis_a" type="fixed">
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="1000.0" lower="0.0" upper="0.035" velocity="10.0"/>
+  <link name="ee_link"/>
+
+  <joint name="ee_link_joint" type="fixed">
     <parent link="bravo_1023_1_joint_link"/>
-    <child link="bravo_push_rod"/>
-    <axis xyz="0. 0. 1."/>
-    <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="-8.669411487068951e-07 0.008999999958245167 0.12560000008350966"/>
+    <child link="ee_link"/>
+    <origin rpy="0 0 -1.5707" xyz="0 0 0.120"/>
   </joint>
-  <joint name="bravo_finger_jaws_rs2_300_joint" type="fixed">
-    <!-- Changed joint type to "fixed" to eliminate looping through another dimension -->
-    <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
-    <mimic joint="bravo_axis_a" multiplier="18.0" offset="0.0"/>
-    <parent link="bravo_1023_1_joint_link"/>
-    <child link="bravo_finger_jaws_rs2_300_link"/>
-    <axis xyz=" 0.  0. -1."/>
-    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 -0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="-0.032999065323888854 -3.178784226673016e-06 0.1353031787392095"/>-->
-      <!-- Subtracted 0.265 to the y origin rotation to eliminate finger collision -->
-  </joint>
-  <joint name="bravo_finger_jaws_rs2_301_joint" type="fixed">
-    <!-- Changed joint type to "fixed" to eliminate looping through another dimension -->
-    <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
-    <mimic joint="bravo_finger_jaws_rs2_300_joint" multiplier="1.0" offset="0.0"/>
-    <parent link="bravo_1023_1_joint_link"/>
-    <child link="bravo_finger_jaws_rs2_301_link"/>
-    <axis xyz="0. 0. 1."/>
-    <origin rpy="0 3.14159 -1.5707" xyz="0 0.13529682117078565 0.033"/> <!-- Old: rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>-->
-    <!-- Added 0.265 to the y origin rotation to eliminate finger collision -->
-  </joint>
-  <!-- Changed bravo_axis_b to fixed -->
-  <joint name="bravo_axis_b" type="fixed">
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
-    <parent link="bravo_1023_0_joint_link"/>
-    <child link="bravo_1023_1_joint_link"/>
-    <axis xyz=" 0.  0. -1."/>
-    <origin rpy="3.14159 -0.0 0" xyz="0.0408 -0.09434999999999824 0"/> <!-- Old: rpy="3.14159 -0.0 0.6" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>____________________________-->
-  </joint>
-  <joint name="bravo_axis_c" type="revolute">
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="500.0" lower="0.0" upper="3.2" velocity="3.0"/>
-    <parent link="bravo_1026_1_joint_link"/>
-    <child link="bravo_1023_0_joint_link"/>
-    <axis xyz=" 0. 0. -1."/>
-    <origin rpy="0.0 3.06659 3.14159" xyz="-0.041999999999852135 0.058 0.005"/> <!-- Old: rpy="0.0 -0.0 3.14159" xyz="-0.041999999999852135 1.1145077132081467e-07 0.0634"/>______________________-->
-  </joint>
-  <!-- Changed bravo_axis_d to fixed -->
-  <joint name="bravo_axis_d" type="fixed">
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>
-    <parent link="bravo_1026_0_joint_link"/>
-    <child link="bravo_1026_1_joint_link"/>
-    <axis xyz=" 0.  0. -1."/>
-    <origin rpy="3.14159 0.1 0.0" xyz="0.0408 -0.09434999999999824 0.001"/> <!-- Old: rpy="3.14159 -0.0 0.0" xyz="0.0408 -1.326794896676365e-09 -0.09434999999999824"/>____________________SEEMS TO BE PART OF THE PROBLEM OF MISSALIGNMENT__-->
-  </joint>
-  <joint name="bravo_axis_e" type="revolute">
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
-    <parent link="bravo_1013_joint_link"/>
-    <child link="bravo_1026_0_joint_link"/>
-    <axis xyz=" 0. 0. -1."/>
-    <origin rpy="0 -0.075 0" xyz="0.0040000000018364235 -0.29034 0"/> <!-- Old: rpy="3.14159 -0.0 3.14159" xyz="0.0040000000018364235 7.477816037645589e-07 -0.29034999999915573"/>_____________________________________-->
-  </joint>
-  <joint name="bravo_axis_f" type="revolute">
-    <dynamics damping="10.0" friction="0.0"/>
-    <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
-    <parent link="bravo_1019_end_link"/>
-    <child link="bravo_1013_joint_link"/>
-    <axis xyz=" 0. 0. -1."/>
-    <origin rpy="0.0 -0.0 3.14159" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
-  </joint>
+
 </robot>
