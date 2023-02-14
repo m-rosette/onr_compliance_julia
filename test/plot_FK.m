@@ -5,9 +5,28 @@
 file = load("Collision Data Storage\planar_arm_workspace_data - Copy.mat");
 
 % Import robot URDF
-robot = importrobot('bravo7_planar.urdf', DataFormat='column');
+robot = importrobot('urdf\bravo7_planar.urdf', DataFormat='column');
 
 joint_angles = [pi; 1.5708; 1.5708];
+
+transform = getTransform(robot, joint_angles, "end_effector_tip", "world"); % THIS WORKED!!!!!!!----------------------------------
+ee_point = transform(1:3, 4)'
+% % figure;
+% show(robot, joint_angles, "Visuals","on")
+% hold on 
+% scatter3(ee_point(1), 0, ee_point(3), 10000, '.')
+figure;
+show(robot, [3*pi/4; pi; pi/2], "Visuals","on");
+hold on 
+scatter3(file.ee_points(:, 1), file.ee_points(:, 2), file.ee_points(:, 3), "."); % Converted mm to m
+xlim([-0.5, 1.1])
+ylim([-0.1, 0.1])
+zlim([-0.75, 1.1])
+title("Bravo Planar Workspace")
+xlabel("x-axis (m)")
+ylabel("y-axis (m)")
+zlabel("z-axis (m)")
+grid on
 
 transform = getTransform(robot, joint_angles, "end_effector_tip", "world"); % THIS WORKED!!!!!!!----------------------------------
 ee_point = transform(1:3, 4)'
