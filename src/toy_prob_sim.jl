@@ -27,24 +27,31 @@ mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[
 
 
 
-# Joints for planar example
-# joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
+# Name the joints and bodies of the mechanism
 vehicle_joint, joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
-
-vehicle_body, arm_base, body1_1013, body2_1026, body3_1023 = bodies(mechanism_bravo_vehicle)
-# vehicle_body = main body mesh
-# arm_base = base of the arm
-# body1_1013 = 
+~, vehicle_body, body1_1013, body2_1026, body3_1023 = bodies(mechanism_bravo_vehicle)
 
 body_frame = default_frame(vehicle_body)
-body_arm_base = default_frame(arm_base)
 body1_frame = default_frame(body1_1013)
 body2_frame = default_frame(body2_1026)
 body3_frame = default_frame(body3_1023)
 base_frame = root_frame(mechanism_bravo_vehicle)
 
 
-frame_names_cob = [""]
+# ----------------------------------------------------------
+#                 COM and COB Frame Setup
+# ----------------------------------------------------------
+frame_names_cob = ["vehicle_cob", "body1_1013_cob", "body2_1026_cob", "body3_1023_cob", "jaw_cob"]
+frame_names_com = ["vehicle_com", "body1_1013_com", "body2_1026_com", "body3_1023_com", "jaw_com"]
+# Assume default frame = COM
+# TODO -> verify all inertial terms in the URDF - they seem to be mismatched with the inertial terms from the alpha arm...
+    # bravo_1013_joint_link is correct (joint 3 in manual)
+    # bravo_1026_0_joint_link is corrected (joint 4 in manual)
+    # bravo_1023_0_joint_link NOT SURE (DONT KNOW in manual)
+cob_vecs = [SVector{3, Float64}([0.0, 0.0, 0.02]), SVector{3, Float64}([0.033, -0.043, -0.07]), SVector{3, Float64}([0.020, 0.012, -0.140]), SVector{3, Float64}([0.0, 0.003, -.098]), SVector{3, Float64}([0.0, 0.0, 0.0])]
+com_vecs = [SVector{3, Float64}([0.0, 0.0, 0.0]), SVector{3, Float64}([0.022, -.029, 0.001]), SVector{3, Float64}([0.017, -0.026, -0.002]), SVector{3, Float64}([0.0, 0.003, -.098]), SVector{3, Float64}([0.0, 0.0, 0.0])]
+cob_frames = []
+com_frames = []
 
 
 # Initialize the mechanism state -------------------------------------
