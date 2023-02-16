@@ -1,11 +1,13 @@
-using RigidBodyDynamics
+# ----------------------------------------------------------
+#                     Import Libraries
+# ----------------------------------------------------------
+using RigidBodyDynamics, Rotations
 using LinearAlgebra, StaticArrays, DataStructures
-using Rotations
 using MeshCat, MeshCatMechanisms, MechanismGeometries
 using CoordinateTransformations
 using GeometryBasics
-using Revise
-using Plots, CSV, Tables, ProgressBars
+using Printf, Plots, CSV, Tables, ProgressBars, Revise
+using Random
 using onr_compliance_julia
 
 include("FrameSetup.jl")
@@ -19,20 +21,18 @@ println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
-# urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_obj.urdf")     # Arm only
-# urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_test_axis_flop.urdf")     # Arm only
 urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_seabotix.urdf")   # Arm and Seabotix
 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, -10.0]) # gravity Default: = [0.0, 0.0, -9.81])
+mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, 0.0]) # gravity Default: = [0.0, 0.0, -9.81])
 
 delete!(vis)
 
 # Visulaize the URDFs
 mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo])
-
+# render(mvis)
 
 
 # Name the joints and bodies of the mechanism
@@ -213,7 +213,7 @@ if show_animation == true
     println("done.")
 end
 
-
+render(mvis)
 
 
 
