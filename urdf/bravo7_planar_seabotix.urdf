@@ -608,7 +608,7 @@
 
   <link name="bravo_1023_0_joint_link">
     <inertial>
-      <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.003 -0.098"/>
+      <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.003 -0.098"/>  <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.0 0.003 -0.098"/>______________________-->
       <mass value="0.333"/>
       <inertia ixx="0.003709" ixy="-2e-06" ixz="-4e-06" iyy="0.003734" iyz="0.0" izz="7.9e-05"/>
     </inertial>
