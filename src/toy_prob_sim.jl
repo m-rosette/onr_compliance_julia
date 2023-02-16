@@ -1,5 +1,5 @@
 using RigidBodyDynamics
-using LinearAlgebra, StaticArrays
+using LinearAlgebra, StaticArrays, DataStructures
 using Rotations
 using MeshCat, MeshCatMechanisms, MechanismGeometries
 using CoordinateTransformations
@@ -198,11 +198,11 @@ paths = OrderedDict();
 
 # Downsample the simulation output
 paths["qs0"] = [qs[i][1] for i in 1:sample_rate:length(qs)]
-for idx = 1:10
+for idx = 1:9
     joint_poses = [qs[i][idx+1] for i in 1:sample_rate:length(qs)]
     paths[string("qs", idx)] = joint_poses
 end
-for idx = 1:10
+for idx = 1:9
     joint_vels = [vs[i][idx] for i in 1:sample_rate:length(vs)]
     paths[string("vs", idx)] = joint_vels
 end
@@ -252,7 +252,7 @@ end
 
 
 # setanimation!(mvis, animation)
-# render(mvis)
+
 
 
 

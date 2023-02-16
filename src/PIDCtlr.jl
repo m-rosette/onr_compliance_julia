@@ -53,7 +53,7 @@ mutable struct CtlrCache
             joint_vec = [vehicle_joint, jointE, jointD, jointC]
             num_actuated_dofs = 7
             num_dofs = 9
-        elseif length(joints(mechanism)) == 6
+        elseif length(joints(mechanism)) == 5
             vehicle_joint, jointE, jointD, jointC, jawjoint = joints(mechanism)
             joint_vec = [vehicle_joint, jointE, jointD, jointC, jawjoint]
             num_actuated_dofs = 8
@@ -119,7 +119,7 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
             torques[7] = -.004 # ff joint E value
             torques[8] = -.325 # ff Joint D value 
             torques[9] = -.034 # ff Joint C value
-            torques[10] = .004
+            # torques[10] = .004
         end
         
         # Roll and pitch are not controlled
