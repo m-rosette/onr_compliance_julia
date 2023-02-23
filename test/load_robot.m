@@ -8,7 +8,8 @@ clc
 file = load("WorkspaceData\bravo_workspace_corrected.mat");
 
 % Create Robot Representation
-bravo = importrobot('urdf/bravo7_planar.urdf', DataFormat='column');
+bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
+% test = importrobot('urdf/three_link_arm.urdf', DataFormat='column');
 % bravo = importrobot('base_joint.urdf', DataFormat='column');
 
 % Generate Trajectory and Check for Collisions
@@ -18,16 +19,10 @@ bravo = importrobot('urdf/bravo7_planar.urdf', DataFormat='column');
 % is_self_collide = checkCollision(bravo, startConfig, 'SkippedSelfCollisions', 'parent');
 
 % Loop through a set of collision free angles
-% row = 1;
-% range = 10;
-% for i = row:range
-%     % Display the URDF
-%     show(bravo, file.collision_free_angles(i, :)', 'PreservePlot', false, 'FastUpdate', true);
-%     hold on
-%     drawnow
-% end
-
-
-
-
-show(bravo, [pi; pi; pi], 'visuals','on','collision','off');
+row = 800000;
+range = row + 100;
+for i = row:range
+    % Display the URDF
+    show(bravo, file.collision_free_angles(i, :)', 'PreservePlot', false, 'FastUpdate', true);
+    drawnow
+end
