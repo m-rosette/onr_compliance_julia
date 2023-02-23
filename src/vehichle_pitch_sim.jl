@@ -186,7 +186,7 @@ end
 
 # Simulate the trajectory
 if save_to_csv != true; println("Simulating... ") end
-ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
+ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, params, ctlr_cache, hydro_calc!; Δt=Δt)
 # ts, qs, vs = simulate_with_ext_forces(state, 5, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
 if save_to_csv != true; println("done.") end
 

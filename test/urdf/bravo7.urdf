@@ -391,6 +391,14 @@
     <origin rpy="-1.5707 -1.3057 0.0" xyz="0.03300093406370696 3.178784226673016e-06 0.13529682117078565"/>
     <!-- Added 0.265 to the y origin rotation to eliminate finger collision -->
   </joint>
+
+  <joint name="end_effector_tip_joint" type="fixed">
+    <parent link="bravo_1023_0_joint_link"/>
+    <child link="end_effector_tip"/>
+    <axis xyz="0.0 -1 0.0"/>
+    <origin rpy="0.0 3.14159 0.0" xyz="0.042 0.0 -0.367"/>
+  </joint>
+
   <joint name="bravo_axis_b" type="continuous">
     <dynamics damping="10.0" friction="0.0"/>
     <limit effort="500.0" lower="0.0" upper="6.2" velocity="3.0"/>

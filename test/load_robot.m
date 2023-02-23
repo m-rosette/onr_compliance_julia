@@ -5,25 +5,29 @@
 clear
 clc
 
+file = load("WorkspaceData\bravo_workspace_corrected.mat");
+
 % Create Robot Representation
-bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
+bravo = importrobot('urdf/bravo7_planar.urdf', DataFormat='column');
 % bravo = importrobot('base_joint.urdf', DataFormat='column');
 
 % Generate Trajectory and Check for Collisions
-config = [pi/2; pi; pi];
+% config = file.collision_free_angles(row, 1:3);
 
 % If the two geometries are in collision, is_self_collide is 1. Otherwise, the value is 0
 % is_self_collide = checkCollision(bravo, startConfig, 'SkippedSelfCollisions', 'parent');
 
-% Get COM location and Jacobian
-[com_location, com_jacobian] = centerOfMass(bravo, config);
+% Loop through a set of collision free angles
+% row = 1;
+% range = 10;
+% for i = row:range
+%     % Display the URDF
+%     show(bravo, file.collision_free_angles(i, :)', 'PreservePlot', false, 'FastUpdate', true);
+%     hold on
+%     drawnow
+% end
 
-% Display the URDF
-show(bravo, config, 'visuals','on','collision','off')
-hold on
-scatter3(com_location(1), com_location(2), com_location(3), 10000, ".")
 
 
 
-
-
+show(bravo, [pi; pi; pi], 'visuals','on','collision','off');
