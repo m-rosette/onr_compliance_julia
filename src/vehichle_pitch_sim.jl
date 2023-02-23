@@ -32,7 +32,7 @@ delete!(vis)
 
 # Visulaize the URDFs
 mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo])
-# render(mvis)
+render(mvis)
 
 
 # Name the joints and bodies of the mechanism
@@ -104,7 +104,7 @@ println("CoM and CoB frames initialized. \n")
 
 function reset_to_equilibrium!(state)
     zero!(state)
-    set_configuration!(state, vehicle_joint, [.9777, -.0019, 0.2098, .0079, 0., 0., 0.])
+    set_configuration!(state, vehicle_joint, [1, 0, 0, 0, 0, 0, 0]) #[.9777, -.0019, 0.2098, .0079, 0., 0., 0.])
 end
 
 # Simulation ---------------------------------------------------------
@@ -118,12 +118,6 @@ sample_rate = Int(floor((1/Δt)/goal_freq))
 # Control variables
 do_scale_traj = true   # Scale the trajectory?
 duration_after_traj = 1.0   # How long to simulate after trajectory has ended
-
-# # include("PIDCtlr.jl")
-# # include("TrajGenJoints.jl")
-# # # include("HydroCalc.jl")
-# # include("SimWExt.jl")
-
 
 # ----------------------------------------------------------
 #                      Gather Sim Data
@@ -214,45 +208,5 @@ if show_animation == true
 end
 
 render(mvis)
-
-
-
-
-# range_length = 10
-# time = LinRange(0, 1, range_length)
-# vehicle_rotation = RotXYX(0, 0.5, 0)
-# println(vehicle_rotation)
-# config0 = QuatRotation(vehicle_rotation)
-# println(config0)
-# println(MRP(config0))
-# config1 = LinRange(0, -3*pi/4, range_length)
-# config2 = LinRange(0, pi/2, range_length)
-# config3 = LinRange(0, pi/4, range_length)
-# test_config = []
-
-# frame_step = 10
-# animation = MeshCat.Animation()
-# for i in 1:range_length
-#     if i == 1
-#         MeshCat.atframe(animation, i) do 
-#             set_configuration!(mvis, vehicle_joint, config0) #[1, 0, 0, 0, 0, 0, 0])
-#             set_configuration!(mvis, joint1, config1[i])
-#             set_configuration!(mvis, joint2, config2[i])
-#             set_configuration!(mvis, joint3, config3[i])
-#         end
-#     else
-#         MeshCat.atframe(animation, i * frame_step) do 
-#             set_configuration!(mvis, vehicle_joint, config0) #[1, 0, 0, 0, 0, 0, 0])
-#             set_configuration!(mvis, joint1, config1[i])
-#             set_configuration!(mvis, joint2, config2[i])
-#             set_configuration!(mvis, joint3, config3[i])
-#         end
-#     end
-# end
-
-
-# setanimation!(mvis, animation)
-
-
 
 

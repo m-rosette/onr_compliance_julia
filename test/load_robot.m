@@ -19,10 +19,12 @@ bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
 % is_self_collide = checkCollision(bravo, startConfig, 'SkippedSelfCollisions', 'parent');
 
 % Loop through a set of collision free angles
-row = 800000;
-range = row + 100;
-for i = row:range
-    % Display the URDF
-    show(bravo, file.collision_free_angles(i, :)', 'PreservePlot', false, 'FastUpdate', true);
-    drawnow
-end
+% row = 800000;
+% range = row + 100;
+% for i = row:range
+%     % Display the URDF
+%     show(bravo, file.collision_free_angles(i, :)', 'PreservePlot', false, 'FastUpdate', true);
+%     drawnow
+% end
+
+show(bravo, [1.5969762655748114, 2.8536133270107285, 1.9373154697137058]')
