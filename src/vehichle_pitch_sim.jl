@@ -21,7 +21,7 @@ println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_seabotix.urdf")   # Arm and Seabotix
+urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_toy_saab.urdf")   # Arm and Seabotix
 
 
 # Visualizer ---------------------------------------------------------
@@ -71,7 +71,7 @@ setup_frames!(mechanism_bravo_vehicle, frame_names_cob, frame_names_com, cob_vec
 # One time setup of buoyancy forces
 # KEEP ARM BASE VALUES AT END OF LIST for HydroCalc
 rho = 997
-volumes = [10.23 / (.001*rho), .47, .51, .43, .72] # vehicle, shoulder, ua, elbow, wrist, jaw, armbase
+volumes = [60 / (.001*rho), .47, .51, .43, .72] # vehicle, shoulder, ua, elbow, wrist, jaw, armbase
 buoy_force_mags = volumes * rho * 9.81 * .001
 buoy_lin_forces = []
 for mag in buoy_force_mags
@@ -79,7 +79,7 @@ for mag in buoy_force_mags
     push!(buoy_lin_forces, lin_force)
 end
 
-masses = [10.0, 1.14, 1.14, 1.03, 1.25]
+masses = [60, 1.14, 1.14, 1.03, 1.25]
 grav_forces = masses * 9.81
 grav_lin_forces = []
 for f_g in grav_forces
@@ -104,7 +104,7 @@ println("CoM and CoB frames initialized. \n")
 
 function reset_to_equilibrium!(state)
     zero!(state)
-    set_configuration!(state, vehicle_joint, [1, 0, 0, 0, 0, 0, 0]) #[.9777, -.0019, 0.2098, .0079, 0., 0., 0.])
+    set_configuration!(state, vehicle_joint, [.9777, -.0019, 0.2098, .0079, 0., 0., 0.])
 end
 
 # Simulation ---------------------------------------------------------
@@ -123,8 +123,7 @@ duration_after_traj = 1.0   # How long to simulate after trajectory has ended
 #                      Gather Sim Data
 # ----------------------------------------------------------
 
-num_trajs = 1 
-save_to_csv = false
+num_trajs = 1
 show_animation = true
 bool_plot_velocities = false
 bool_plot_taus = false
@@ -132,11 +131,6 @@ bool_plot_positions = false
 
 # Reset the sim to the equilibrium position
 reset_to_equilibrium!(state)
-
-# Start up the controller
-ctlr_cache = CtlrCache(Δt, ctrl_freq, mechanism_bravo_vehicle) # -------------------------------------------- DO I NEED THIS??? ----------------------------------------
-
-
 
 # ----------------------------------------------------------
 #                          Simulate
@@ -164,23 +158,9 @@ println("Scaled trajectory duration: $(duration) seconds")
 poses = scaled_traj[2]
 vels = scaled_traj[3]
 
-# Make vector of waypoint values and time step to save to csv
-waypoints = [Δt*sample_rate params.wp.start.θs[1:3]... params.wp.goal.θs[1:3]... params.wp.start.dθs[1:3]... params.wp.goal.dθs[1:3]...]
-wp_data = Tables.table(waypoints)
-
-# Save waypoints (start and goal positions, velocities) to CSV file
-if save_to_csv == true
-    if n == 1
-        goal_headers = ["dt", "E_start", "D_start", "C_start", "B_start", "E_end", "D_end", "C_end", "B_end", "dE_start", "dD_start", "dC_start", "dB_start", "dE_end", "dD_end", "dC_end", "dB_end"]
-        CSV.write("data/full-sim-data-110822/full-sim-waypoints_110822.csv", wp_data, header=goal_headers)
-    else 
-        CSV.write("data/full-sim-data-110822/full-sim-waypoints_110822.csv", wp_data, header=false, append=true)
-    end
-end
-
 # Simulate the trajectory
 if save_to_csv != true; println("Simulating... ") end
-ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, params, ctlr_cache, hydro_calc!; Δt=Δt)
+ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
 # ts, qs, vs = simulate_with_ext_forces(state, 5, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
 if save_to_csv != true; println("done.") end
 
@@ -206,7 +186,5 @@ if show_animation == true
     MeshCatMechanisms.animate(mvis, ts, qs; realtimerate = 1.0)
     println("done.")
 end
-
-render(mvis)
 
 
