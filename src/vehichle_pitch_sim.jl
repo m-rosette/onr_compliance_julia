@@ -18,22 +18,17 @@ include("TrajGenJoints.jl")
 
 println("Libraries imported.")
 
-
 # Loading files ------------------------------------------------------
-src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_toy_saab.urdf")   # Arm and Seabotix
-
+urdf_file = joinpath("urdf", "bravo7_planar_toy_saab.urdf")   # Arm and Seabotix
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, 0.0]) # gravity Default: = [0.0, 0.0, -9.81])
+mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, 0.0])
 
 delete!(vis)
 
 # Visulaize the URDFs
 mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo])
-render(mvis)
-
 
 # Name the joints and bodies of the mechanism
 vehicle_joint, joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
@@ -104,27 +99,23 @@ println("CoM and CoB frames initialized. \n")
 
 function reset_to_equilibrium!(state)
     zero!(state)
-    set_configuration!(state, vehicle_joint, [.9777, -.0019, 0.2098, .0079, 0., 0., 0.])
+    set_configuration!(state, vehicle_joint, [.9777, -0.0019, 0.2098, -.0079, 0., 0., 0.])
 end
 
-# Simulation ---------------------------------------------------------
+# Constants ---------------------------------------------------------
 state = MechanismState(mechanism_bravo_vehicle)
 Δt = 1e-3
 ctrl_freq = 100
 final_time = 5.0
 goal_freq = 100
 sample_rate = Int(floor((1/Δt)/goal_freq))
-
-# Control variables
-do_scale_traj = true   # Scale the trajectory?
 duration_after_traj = 1.0   # How long to simulate after trajectory has ended
 
-# ----------------------------------------------------------
-#                      Gather Sim Data
-# ----------------------------------------------------------
 
+# Control variables -------------------------------------------------
 num_trajs = 1
 show_animation = true
+do_scale_traj = true   # Scale the trajectory?
 bool_plot_velocities = false
 bool_plot_taus = false
 bool_plot_positions = false
@@ -159,31 +150,15 @@ poses = scaled_traj[2]
 vels = scaled_traj[3]
 
 # Simulate the trajectory
-if save_to_csv != true; println("Simulating... ") end
+println("Simulating... ")
 ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
 # ts, qs, vs = simulate_with_ext_forces(state, 5, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
-if save_to_csv != true; println("done.") end
-
-# Downsample the desired velocities
-ts_down = [ts[i] for i in 1:sample_rate:length(ts)]
-des_vs = [get_desv_at_t(t, params) for t in ts_down]
-des_qs = [get_desq_at_t(t, params) for t in ts_down]
-paths = OrderedDict();
-
-# Downsample the simulation output
-paths["qs0"] = [qs[i][1] for i in 1:sample_rate:length(qs)]
-for idx = 1:9
-    joint_poses = [qs[i][idx+1] for i in 1:sample_rate:length(qs)]
-    paths[string("qs", idx)] = joint_poses
-end
-for idx = 1:9
-    joint_vels = [vs[i][idx] for i in 1:sample_rate:length(vs)]
-    paths[string("vs", idx)] = joint_vels
-end
+println("done.")
 
 if show_animation == true
     print("Animating... ")
-    MeshCatMechanisms.animate(mvis, ts, qs; realtimerate = 1.0)
+    setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
+    open(mvis)
     println("done.")
 end
 
