@@ -15,11 +15,12 @@ include("HydroCalc.jl")
 include("SimWExt.jl")
 include("PIDCtlr.jl")
 include("TrajGenJoints.jl")
+include("SimpleController.jl")
 
 println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
-urdf_file = joinpath("urdf", "bravo7_planar_toy_saab.urdf")   # Arm and Seabotix
+urdf_file = joinpath("urdf", "bravo7_planar_toy_saab.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
@@ -98,27 +99,22 @@ println("CoM and CoB frames initialized. \n")
 # ----------------------------------------------------------
 
 function reset_to_equilibrium!(state)
-    zero!(state)
-    set_configuration!(state, vehicle_joint, [.9777, -0.0019, 0.2098, -.0079, 0., 0., 0.])
+    # zero!(state)
+    set_configuration!(state, joint1, pi/2)
+    set_configuration!(state, joint2, pi)
+    set_configuration!(state, joint3, pi)
+    set_configuration!(state, vehicle_joint, [.9777, 0, 0, 0, 0., 0., 0.])
 end
 
 # Constants ---------------------------------------------------------
 state = MechanismState(mechanism_bravo_vehicle)
 Δt = 1e-3
-ctrl_freq = 100
 final_time = 5.0
-goal_freq = 100
-sample_rate = Int(floor((1/Δt)/goal_freq))
 duration_after_traj = 1.0   # How long to simulate after trajectory has ended
 
 
 # Control variables -------------------------------------------------
-num_trajs = 1
 show_animation = true
-do_scale_traj = true   # Scale the trajectory?
-bool_plot_velocities = false
-bool_plot_taus = false
-bool_plot_positions = false
 
 # Reset the sim to the equilibrium position
 reset_to_equilibrium!(state)
@@ -126,33 +122,11 @@ reset_to_equilibrium!(state)
 # ----------------------------------------------------------
 #                          Simulate
 # ----------------------------------------------------------
-# Generate a random waypoint and see if there's a valid trajectory to it
-wp = gen_rand_waypoints_to_rest()
-
-traj = find_trajectory(wp) 
-
-# Keep trying until a good trajectory is found
-while traj === nothing
-    global wp = gen_rand_waypoints_to_rest()
-    global traj = find_trajectory(wp)
-end
-
-# Scale that trajectory to 1x-3x "top speed"
-if do_scale_traj == true
-    scaled_traj = scale_trajectory(traj...)
-else
-    scaled_traj = traj 
-end
-params = scaled_traj[1]
-duration = params.T
-println("Scaled trajectory duration: $(duration) seconds")
-poses = scaled_traj[2]
-vels = scaled_traj[3]
 
 # Simulate the trajectory
-println("Simulating... ")
-ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
-# ts, qs, vs = simulate_with_ext_forces(state, 5, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
+println("Simulating... ")   
+# ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
+ts, qs, vs = simple_simulate_with_ext_forces(state, final_time, hydro_calc!, simple_control!; Δt=Δt)
 println("done.")
 
 if show_animation == true
@@ -161,5 +135,3 @@ if show_animation == true
     open(mvis)
     println("done.")
 end
-
-
