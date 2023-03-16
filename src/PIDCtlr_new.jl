@@ -102,10 +102,12 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
             torques[8] = -.325 # ff Joint D value 
             torques[9] = -.034 # ff Joint C value
             # torques[10] = .004
+            
+            # Vehicle roll
+            torques[1] = 0.
         end
         
-        # Roll and pitch are not controlled
-        torques[1] = 0.
+        # Vehicle pitch is not controlled
         torques[2] = 0.
         
         c.des_vel = get_desv_at_t(t, pars)
@@ -119,9 +121,9 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
         if rem(c.step_ctr, c.ctrl_steps) == 0 && c.step_ctr != 0
             # Get forces for vehicle (yaw, surge, sway, heave)
             for dir_idx = 3:6
-                # println("PID ctlr on vehicle")
+                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[dir_idx]                
                 actual_vel = velocity(state, c.joint_vec[1])
-                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[dir_idx]
+
                 ctlr_tau = PID_ctlr(torques[dir_idx][1], t, actual_vel[dir_idx], dir_idx, c)
                 c_taus[dir_idx] = ctlr_tau 
                 torques[dir_idx] = ctlr_tau
@@ -130,9 +132,11 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
             # Get torques for the arm joints
             for jt_idx in 2:length(c.joint_vec) # Joint index (1:vehicle, 2:baseJoint, etc)
                 idx = jt_idx+5 # velocity index (7 to 10)
+
+                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[jt_idx]                
                 actual_vel = velocity(state, c.joint_vec[1])
+
                 ctlr_tau = PID_ctlr(torques[idx][1], t, actual_vel[idx], idx, c) 
-                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[jt_idx]
                 torques[velocity_range(state, c.joint_vec[jt_idx])] .= [ctlr_tau] 
                 c_taus[idx] = ctlr_tau 
             end
