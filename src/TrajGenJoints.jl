@@ -211,7 +211,7 @@ function check_lim(vals::Array, lims, idx)
     return is_in_range
 end
 
-# TODO -> What is the third element "6" in the a array??? ---------------------------------------------------------------------------------------------=-=-=-=-=-=-==-=-=-=-=-=-
+# TODO: -> What is the third element "6" in the a array??? ---------------------------------------------------------------------------------------------=-=-=-=-=-=-==-=-=-=-=-=-
 
 function scale_trajectory(params, poses, vels)
     a = Array{Float64}(undef, num_trajectory_dofs, 6)

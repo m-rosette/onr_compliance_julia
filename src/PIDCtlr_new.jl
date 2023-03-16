@@ -3,6 +3,7 @@ using RigidBodyDynamics, Distributions, Random
 # ------------------------------------------------------------------------
 #                              SETUP 
 # ------------------------------------------------------------------------
+# TODO: need to tune the PID controller - see Hannah's notes about this. Also see https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method
 arm_Kp = .025
 arm_Kd = 0.0006
 arm_Ki = 0.005
@@ -12,25 +13,9 @@ v_Ki = 0.015
 Kp = [1.5, v_Kp, v_Kp, v_Kp, arm_Kp, .015, .006, .0003, 20.]
 Kd = [0.0002, v_Kd, v_Kd, v_Kd, arm_Kd, 0.0004, 0.0004, 0.00004, .002]
 Ki = [0.0001, v_Ki, v_Ki, v_Ki, arm_Ki, 0.005, 0.01, 0.0008, .1]
+
+# TODO: Need to update the torque_lims - check Bravo manual for some of the values - can approx. the torque lims of the vehicle
 torque_lims = [20., 71.5, 88.2, 177., 10.0, 10.0, 10.0, 0.6, 600]
-
-# Sensor noise distributions 
-# Implemented:
-# Encoder --> joint position noise -integration-> joint velocity noise
-# Gyroscope --> vehicle body vel noise 
-v_ang_vel_noise_dist = Distributions.Normal(0, .0013) # 75 mdps (LSM6DSOX)
-arm_pos_noise_dist = Distributions.Normal(0, .0017/6) # .1 degrees, from Reach website
-
-v_lin_vel_noise_dist = Distributions.Normal(0, .01)
-v_ori_noise_dist = Distributions.Normal(0, 0.01)
-v_pos_noise_dist = Distributions.Normal(0, 0.01)
-
-# v_ang_vel_noise_dist = Distributions.Normal(0, .00) # 75 mdps (LSM6DSOX)
-# arm_pos_noise_dist = Distributions.Normal(0, .00) # .1 degrees, from Reach website
-
-# v_lin_vel_noise_dist = Distributions.Normal(0, 0.)
-# v_ori_noise_dist = Distributions.Normal(0, 0.0)
-# v_pos_noise_dist = Distributions.Normal(0, 0.0)
 
 
 mutable struct CtlrCache
@@ -103,12 +88,9 @@ In this case, also imposes damping to each joint.
 Requires the parameters of the trajectory to be followed (pars=trajParams), which consists of the quintic coefficients `a` and the two waypoints to travel between.
 Only happens every 4 steps because integration is done with Runge-Kutta.
 """
-# function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c)
 function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c)
     # If it's the first time called in the Runge-Kutta, update the control torque
-    # println("Made it inside the function! Ctr = $(time_step_ctr)")
     if rem(c.step_ctr, 4) == 0
-        # println("Joint E Torques: $(torques[7])")
         # Set up empty vector for control torques
         c_taus = zeros(size(c.taus, 1),1)
         if c.step_ctr == 0
@@ -126,40 +108,21 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
         torques[1] = 0.
         torques[2] = 0.
         
-        # println("Requesting des vel from trajgen")
-        # c.des_vel = TrajGen.get_desv_at_t(t, pars)
         c.des_vel = get_desv_at_t(t, pars)
         if rem(c.step_ctr, 1000) == 0
             println("Desired velocity vector: $(c.des_vel)")
         end
+
         # Don't move the manipulator
         # c.des_vel[end-3:end] = zeros(4,1)
 
         if rem(c.step_ctr, c.ctrl_steps) == 0 && c.step_ctr != 0
-
-            noisy_poses = similar(configuration(state))
-            noisy_vels = similar(velocity(state))
-
-            add_arm_noise!(noisy_poses, noisy_vels, configuration(state)[8:end], c.noisy_qs[8:end,end], 1/c.ctrl_freq)
-            add_rotational_noise!(noisy_poses, noisy_vels, velocity(state)[1:3], c.noisy_qs[1:4,end], 1/c.ctrl_freq)
-
-            noisy_velocity_veh = add_velocity_noise(velocity(state))
-            noisy_poses_veh = add_position_noise(configuration(state))
-
-            noisy_poses[5:7] = noisy_poses_veh[5:7]
-            noisy_vels[4:6] = noisy_velocity_veh[4:6]
-
-            c.noisy_vs = cat(c.noisy_vs, noisy_vels, dims=2)
-            c.noisy_qs = cat(c.noisy_qs, noisy_poses, dims=2)
-
-            filtered_velocity = moving_average_filter_velocity(5, c.noisy_vs, velocity(state))
-            c.filtered_vs = cat(c.filtered_vs, filtered_velocity, dims=2)
-
             # Get forces for vehicle (yaw, surge, sway, heave)
             for dir_idx = 3:6
                 # println("PID ctlr on vehicle")
                 actual_vel = velocity(state, c.joint_vec[1])
-                ctlr_tau = PID_ctlr(torques[dir_idx][1], t, filtered_velocity[dir_idx], dir_idx, c)
+                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[dir_idx]
+                ctlr_tau = PID_ctlr(torques[dir_idx][1], t, actual_vel[dir_idx], dir_idx, c)
                 c_taus[dir_idx] = ctlr_tau 
                 torques[dir_idx] = ctlr_tau
             end
@@ -167,7 +130,9 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
             # Get torques for the arm joints
             for jt_idx in 2:length(c.joint_vec) # Joint index (1:vehicle, 2:baseJoint, etc)
                 idx = jt_idx+5 # velocity index (7 to 10)
-                ctlr_tau = PID_ctlr(torques[idx][1], t, filtered_velocity[idx], idx, c) 
+                actual_vel = velocity(state, c.joint_vec[1])
+                ctlr_tau = PID_ctlr(torques[idx][1], t, actual_vel[idx], idx, c) 
+                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[jt_idx]
                 torques[velocity_range(state, c.joint_vec[jt_idx])] .= [ctlr_tau] 
                 c_taus[idx] = ctlr_tau 
             end
@@ -212,7 +177,7 @@ function PID_ctlr(torque, t, vel_act, idx, c)
     # Torque limits
     #TODO see if this is actually limiting the torque change
     new_tau = torque .+ d_tau
-    impose_torque_limit!(new_tau, torque_lims[actuated_idx])
+    impose_torque_limit!(new_tau, vel_act[actuated_idx])
 
     # # store velocity error term
     c.vel_error_cache[actuated_idx]=vel_error
@@ -228,47 +193,4 @@ function limit_d_tau(d_tau, limit)
         d_tau = limit
     end
     return d_tau
-end
-
-function add_velocity_noise(velocity)
-    noisy_velocity = similar(velocity)
-    noisy_velocity[1:3] = velocity[1:3] + rand(v_ang_vel_noise_dist, 3)
-    noisy_velocity[4:6] = velocity[4:6] + rand(v_lin_vel_noise_dist, 3)
-    return noisy_velocity
-end
-
-function add_position_noise(configuration)
-    noisy_poses = similar(configuration)
-    noisy_poses[1:4] = configuration[1:4] + rand(v_ori_noise_dist, 4)
-    noisy_poses[5:7] = configuration[5:7] + rand(v_pos_noise_dist, 3)
-    return noisy_poses
-end
-
-function add_arm_noise!(noisy_poses, noisy_vels, joint_poses, last_noisy_joint_pose, dt)
-    noisy_joint_poses = joint_poses + rand(arm_pos_noise_dist, length(joint_poses))
-    noisy_velocity = (noisy_joint_poses - last_noisy_joint_pose)./dt
-    noisy_poses[8:end] = noisy_joint_poses
-    noisy_vels[7:end] = noisy_velocity
-end
-
-function add_rotational_noise!(noisy_poses, noisy_vels, body_vels, last_ori, dt)
-    noisy_vels[1:3] = body_vels[1:3] + rand(v_ang_vel_noise_dist, 3)
-    prev_R = Rotations.QuatRotation(last_ori)
-    new_R = prev_R*exp(skew(noisy_vels[1:3]...)*dt)
-    new_noisy_R = Rotations.RotMatrix(SMatrix{3,3}(new_R))
-    quat_new_noisy_R = Rotations.QuatRotation(new_noisy_R)
-    noisy_poses[1:4] .= [quat_new_noisy_R.w, quat_new_noisy_R.x, quat_new_noisy_R.y, quat_new_noisy_R.z]
-end
-
-function moving_average_filter_velocity(filt_size, noisy_vs, act_vs)
-    num_its = size(noisy_vs, 2)
-    if num_its < filt_size
-        filtered_vels = act_vs
-    else
-        # println("filtering")
-        # @show sum(noisy_vs[:,end-filt_size+1:end], dims=2)./filt_size
-        filtered_vels = sum(noisy_vs[:,end-filt_size+1:end], dims=2) ./ filt_size  
-    end
-    # @show filtered_vels
-    return filtered_vels
 end

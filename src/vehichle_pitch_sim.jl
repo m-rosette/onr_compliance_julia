@@ -66,7 +66,7 @@ setup_frames!(mechanism_bravo_vehicle, frame_names_cob, frame_names_com, cob_vec
 # f = 997 (kg/m^3) * 9.81 (m/s^2) * V_in_L *.001 (m^3) = kg m / s^2
 # One time setup of buoyancy forces
 # KEEP ARM BASE VALUES AT END OF LIST for HydroCalc
-rho = 997
+rho = 997                                          # ---------------------------------------- Dont have a vehicle mass ------------------
 volumes = [60 / (.001*rho), .47, .51, .43, .72] # vehicle, shoulder, ua, elbow, wrist, jaw, armbase
 buoy_force_mags = volumes * rho * 9.81 * .001
 buoy_lin_forces = []
@@ -75,7 +75,7 @@ for mag in buoy_force_mags
     push!(buoy_lin_forces, lin_force)
 end
 
-masses = [60, 1.14, 1.14, 1.03, 1.25]
+masses = [60, 1.14, 1.14, 1.03, 1.25]   # ---------------------------------------- Dont have a vehicle mass ------------------
 grav_forces = masses * 9.81
 grav_lin_forces = []
 for f_g in grav_forces
@@ -84,7 +84,7 @@ for f_g in grav_forces
 end
 
 # No provided drag terms for the Bravo arm 
-# Using alpha arm terms and scaling them
+# Using alpha arm terms and scaling them ------------------------------------------DONT HAVE THESE ---------------------------------
 scale_factor = 3
 drag_link1 = [0.26 0.26 0.3] * rho * scale_factor
 drag_link2 = [0.3 1.6 1.6] * rho * scale_factor
@@ -109,7 +109,7 @@ end
 # Constants ---------------------------------------------------------
 state = MechanismState(mechanism_bravo_vehicle)
 Δt = 1e-3
-final_time = 5.0
+final_time = 10.0
 duration_after_traj = 1.0   # How long to simulate after trajectory has ended
 
 

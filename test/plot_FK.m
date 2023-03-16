@@ -2,10 +2,10 @@
 % Marcus Rosette
 % 01/27/2023
 
-file = load("Collision Data Storage\planar_arm_workspace_data - Copy.mat");
+file = load("WorkspaceData\bravo_workspace_corrected.mat");
 
 % Import robot URDF
-robot = importrobot('urdf\bravo7_planar.urdf', DataFormat='column');
+robot = importrobot('bravo7_planar.urdf', DataFormat='column');
 
 joint_angles = [pi; 1.5708; 1.5708];
 
