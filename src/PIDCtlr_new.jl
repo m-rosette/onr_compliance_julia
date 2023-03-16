@@ -69,6 +69,15 @@ function impose_torque_limit!(torque, limit)
     end
 end
 
+function limit_d_tau(d_tau, limit)
+    if d_tau < -limit
+        d_tau = -limit
+    elseif d_tau > limit
+        d_tau = limit
+    end
+    return d_tau
+end
+
 function resettimestep(c::CtlrCache)
     c.step_ctr = 0
 end
@@ -188,13 +197,4 @@ function PID_ctlr(torque, t, vel_act, idx, c)
     # c.vel_int_error = c.vel_int_error + vel_error
 
     return new_tau
-end
-
-function limit_d_tau(d_tau, limit)
-    if d_tau < -limit
-        d_tau = -limit
-    elseif d_tau > limit
-        d_tau = limit
-    end
-    return d_tau
 end
