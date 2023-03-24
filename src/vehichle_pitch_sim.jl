@@ -13,9 +13,10 @@ using onr_compliance_julia
 include("FrameSetup.jl")
 include("HydroCalc.jl")
 include("SimWExt.jl")
-include("PIDCtlr.jl")
+# include("PIDCtlr.jl")
 include("TrajGenJoints.jl")
 include("SimpleController.jl")
+include("PIDCtlr_new.jl")
 
 println("Libraries imported.")
 
@@ -66,7 +67,8 @@ setup_frames!(mechanism_bravo_vehicle, frame_names_cob, frame_names_com, cob_vec
 # f = 997 (kg/m^3) * 9.81 (m/s^2) * V_in_L *.001 (m^3) = kg m / s^2
 # One time setup of buoyancy forces
 # KEEP ARM BASE VALUES AT END OF LIST for HydroCalc
-rho = 997                                          # ---------------------------------------- Dont have a vehicle mass ------------------
+rho = 997
+# TODO: Need to verify vehicle volume calc
 volumes = [60 / (.001*rho), .47, .51, .43, .72] # vehicle, shoulder, ua, elbow, wrist, jaw, armbase
 buoy_force_mags = volumes * rho * 9.81 * .001
 buoy_lin_forces = []
@@ -75,7 +77,8 @@ for mag in buoy_force_mags
     push!(buoy_lin_forces, lin_force)
 end
 
-masses = [60, 1.14, 1.14, 1.03, 1.25]   # ---------------------------------------- Dont have a vehicle mass ------------------
+# TODO: Need to verify vehicle mass
+masses = [60, 1.14, 1.14, 1.03, 1.25]
 grav_forces = masses * 9.81
 grav_lin_forces = []
 for f_g in grav_forces
@@ -84,7 +87,8 @@ for f_g in grav_forces
 end
 
 # No provided drag terms for the Bravo arm 
-# Using alpha arm terms and scaling them ------------------------------------------DONT HAVE THESE ---------------------------------
+# Using alpha arm terms and scaling them
+# TODO: Determine effective way to approximate drg terms for bravo
 scale_factor = 3
 drag_link1 = [0.26 0.26 0.3] * rho * scale_factor
 drag_link2 = [0.3 1.6 1.6] * rho * scale_factor
@@ -110,14 +114,53 @@ end
 state = MechanismState(mechanism_bravo_vehicle)
 Δt = 1e-3
 final_time = 10.0
+ctrl_freq = 100 # Control frequency -- how often the control input can be changed
 duration_after_traj = 1.0   # How long to simulate after trajectory has ended
-
+do_scale_traj = true   # Scale the trajectory?
 
 # Control variables -------------------------------------------------
 show_animation = true
 
-# Reset the sim to the equilibrium position
+# Create trajectory 
+params = trajParams[]
+
+swap_times = Vector{Float64}()
+define_multiple_waypoints!(params, swap_times, 2)
+
+# # Reset the sim to the equilibrium position
 reset_to_equilibrium!(state)
+
+ctlr_cache = CtlrCache(Δt, ctrl_freq, state)
+
+reset_to_equilibrium!(state)
+# Start up the controller
+ctlr_cache = CtlrCache(Δt, ctrl_freq, state)
+ctlr_cache.taus[:,1] = [0.; 0.; 0.; 0.; 0.; 10.; 0.; 0.; 0.; 0.]
+
+# ----------------------------------------------------------
+#                          Simulate
+# ----------------------------------------------------------
+# Generate a random waypoint and see if there's a valid trajectory to it
+wp = gen_rand_waypoints_from_equil()
+
+traj = find_trajectory(wp) 
+
+# # Keep trying until a good trajectory is found
+while traj === nothing
+    wp = gen_rand_waypoints_to_rest()
+    traj = find_trajectory(wp)
+end
+
+# # Scale that trajectory to 1x-3x "top speed"
+if do_scale_traj == true
+    scaled_traj = scale_trajectory(traj...)
+else
+    scaled_traj = traj 
+end
+params = scaled_traj[1]
+duration = params.T
+poses = scaled_traj[2]
+vels = scaled_traj[3]
 
 # ----------------------------------------------------------
 #                          Simulate
@@ -125,9 +168,13 @@ reset_to_equilibrium!(state)
 
 # Simulate the trajectory
 println("Simulating... ")   
-# ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
-ts, qs, vs = simple_simulate_with_ext_forces(state, final_time, hydro_calc!, simple_control!; Δt=Δt)
+ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
+# ts, qs, vs = simple_simulate_with_ext_forces(state, final_time, hydro_calc!, simple_control!; Δt=Δt)
+# ts, qs, vs = vanilla_pid_sim_ext_force(state, final_time, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
 println("done.")
+
+# The last vehicle orientation Quaternion from simulation
+# last(qs)[1:4]
 
 if show_animation == true
     print("Animating... ")
@@ -135,3 +182,8 @@ if show_animation == true
     open(mvis)
     println("done.")
 end
+
+# last_quaternion = last(qs)[1:4]
+# vehicle_final_rot = QuatRotation(last_quaternion)
+
+# println(vehicle_final_rot)

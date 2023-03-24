@@ -32,7 +32,8 @@ mutable struct CtlrCache
     noisy_vs
     filtered_vs
     
-    function CtlrCache(dt, control_frequency, mechanism)
+    function CtlrCache(dt, control_frequency, state)
+        mechanism = state.mechanism
         if length(joints(mechanism)) == 4
             vehicle_joint, jointE, jointD, jointC = joints(mechanism)
             joint_vec = [vehicle_joint, jointE, jointD, jointC]
@@ -143,7 +144,7 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
                 idx = jt_idx+5 # velocity index (7 to 10)
 
                 # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[jt_idx]                
-                actual_vel = velocity(state, c.joint_vec[1])
+                actual_vel = velocity(state, c.joint_vec[jt_idx])
 
                 ctlr_tau = PID_ctlr(torques[idx][1], t, actual_vel[idx], idx, c) 
                 torques[velocity_range(state, c.joint_vec[jt_idx])] .= [ctlr_tau] 
