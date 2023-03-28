@@ -21,6 +21,7 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
     if !(RigidBodyDynamics.is_fixed_to_body(bod, frame_com))
         add_frame!(bod, com_transform)
         push!(com_frames, frame_com)
+        setelement!(mvis, frame_com)
     end
 
     bravobase_com_wrt_linkframe = SVector{3, Float64}([-0.018, -0.004, -0.001]) # Sourced from link 0 in Bravo K&D manual

@@ -22,7 +22,7 @@ urdf_file = joinpath("urdf", "bravo7_planar_toy_saab copy.urdf")
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, 0.0])
+mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, -9.81])
 
 delete!(vis)
 
@@ -90,7 +90,7 @@ end
 state = MechanismState(mechanism_bravo_vehicle)
 final_time = 5
 Δt = 1e-3
-show_animation = true
+show_animation = true # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
 # Reset the sim to the equilibrium position
 reset_to_equilibrium!(state)
@@ -105,3 +105,16 @@ if show_animation == true
     open(mvis)
     println("done.")
 end
+
+# Output the final pitch value of the simulation --------------------
+println(" ")
+println("Final Pitch:")
+final_pitch = last(qs)[1]
+print(round(final_pitch, digits=3))
+println(" radians")
+
+final_pitch_deg = final_pitch * (180 / pi)
+print(round(final_pitch_deg, digits=3))
+println(" degrees")
+
+joints(mechanism_bravo_vehicle)
