@@ -359,7 +359,6 @@
     <origin rpy="1.57079 0 0" xyz=".425 0 -.39"/>    <!-- Old rpy="0 0 0" xyz=".325 0 -.09" ________________________________________________________________-->
     <parent link="vehicle_base_link"/>
     <child link="bravo_base_link"/>
-    <dynamics damping="10.0" friction="0.0"/>
   </joint>
 
   <link name="bravo_base_link">
@@ -445,13 +444,13 @@
     </collision>
   </link>
 
-  <joint name="bravo_axis_f" type="revolute">
+  <joint name="bravo_axis_f" type="fixed"> <!-- used to be revolute-->
     <dynamics damping="10.0" friction="0.0"/>
     <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
-    <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0.0 -0.0 3.14159" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
+    <axis xyz=" 0. 0. -1."/>
+    <origin rpy="0.0 -0.0 -1.57" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
   </joint>
 
   <link name="bravo_1013_joint_link">
@@ -537,13 +536,13 @@
     </collision>
   </link>
 
-  <joint name="bravo_axis_e" type="revolute">
+  <joint name="bravo_axis_e" type="fixed"> <!-- used to be revolute-->
     <dynamics damping="10.0" friction="0.0"/>
     <limit effort="500.0" lower="0.0" upper="3.14" velocity="3.0"/>
     <parent link="bravo_1013_joint_link"/>
     <child link="bravo_1026_0_joint_link"/>
-    <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0 0 3.14159" xyz="0.0040000000018364235 -0.29034 0"/> <!-- Old: rpy="3.14159 -0.0 3.14159" xyz="0.0040000000018364235 7.477816037645589e-07 -0.29034999999915573"/>_____________________________________-->
+    <axis xyz=" 0. 0. -1."/>
+    <origin rpy="0 0 0" xyz="0.0040000000018364235 -0.29034 0"/> <!-- Old: rpy="3.14159 -0.0 3.14159" xyz="0.0040000000018364235 7.477816037645589e-07 -0.29034999999915573"/>_____________________________________-->
   </joint>
 
   <link name="bravo_1026_0_joint_link">
@@ -617,12 +616,12 @@
     </collision>
   </link>
 
-  <joint name="bravo_axis_c" type="revolute">
+  <joint name="bravo_axis_c" type="fixed"> <!-- used to be revolute-->
     <dynamics damping="10.0" friction="0.0"/>
     <limit effort="500.0" lower="0.0" upper="3.2" velocity="3.0"/>
     <parent link="bravo_1026_1_joint_link"/>
     <child link="bravo_1023_0_joint_link"/>
-    <axis xyz=" 0. 0. 1."/>
+    <axis xyz=" 0. 0. -1."/>
     <origin rpy="0.0 3.14159 0" xyz="-0.041999999999852135 0.058 0.005"/> <!-- Old: rpy="0.0 -0.0 3.14159" xyz="-0.041999999999852135 1.1145077132081467e-07 0.0634"/>______________________-->
   </joint>
 

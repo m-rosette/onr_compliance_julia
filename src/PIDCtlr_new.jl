@@ -83,12 +83,6 @@ function resettimestep(c::CtlrCache)
     c.step_ctr = 0
 end
 
-function skew(x1, x2, x3)
-    output = [0 -x3 x2;
-            x3 0 -x1;
-            -x2 x1 0]
-end
-
 # ------------------------------------------------------------------------
 #                              CONTROLLER
 # ------------------------------------------------------------------------
@@ -104,51 +98,38 @@ function pid_control!(torques::AbstractVector, t, state::MechanismState, pars, c
         # Set up empty vector for control torques
         c_taus = zeros(size(c.taus, 1),1)
         if c.step_ctr == 0
-            torques[6] = 5.2 # ff z value
+            torques[2] = 0.
             torques[3] = 0.
-            torques[5] = 0.
-            torques[4] = -2.3 # ff x value
-            torques[7] = -.004 # ff joint E value
-            torques[8] = -.325 # ff Joint D value 
-            torques[9] = -.034 # ff Joint C value
-            # torques[10] = .004
-            
-            # Vehicle roll
-            torques[1] = 0.
+            torques[4] = -2.3
         end
         
         # Vehicle pitch is not controlled
-        torques[2] = 0.
+        torques[1] = 0.
         
         c.des_vel = get_desv_at_t(t, pars)
         if rem(c.step_ctr, 1000) == 0
             println("Desired velocity vector: $(c.des_vel)")
         end
 
-        # Don't move the manipulator
-        # c.des_vel[end-3:end] = zeros(4,1)
-
         if rem(c.step_ctr, c.ctrl_steps) == 0 && c.step_ctr != 0
             # Get forces for vehicle (yaw, surge, sway, heave)
-            for dir_idx = 3:6
-                # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[dir_idx]                
-                actual_vel = velocity(state, c.joint_vec[1])
+            # for dir_idx = 3:6
+            # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[dir_idx]                
+            actual_vel = velocity(state, c.joint_vec[1])
 
-                ctlr_tau = PID_ctlr(torques[dir_idx][1], t, actual_vel[dir_idx], dir_idx, c)
-                c_taus[dir_idx] = ctlr_tau 
-                torques[dir_idx] = ctlr_tau
-            end
+            ctlr_tau = PID_ctlr(torques[1][1], t, actual_vel[1], 1, c)
+            c_taus[1] = ctlr_tau 
+            torques[1] = ctlr_tau
+            # end
             
             # Get torques for the arm joints
             for jt_idx in 2:length(c.joint_vec) # Joint index (1:vehicle, 2:baseJoint, etc)
-                idx = jt_idx+5 # velocity index (7 to 10)
-
                 # TODO: Need to see if actual_vel needs to be incremented via c.joint_vec[jt_idx]                
                 actual_vel = velocity(state, c.joint_vec[jt_idx])
 
-                ctlr_tau = PID_ctlr(torques[idx][1], t, actual_vel[idx], idx, c) 
+                ctlr_tau = PID_ctlr(torques[jt_idx][1], t, actual_vel, jt_idx, c) 
                 torques[velocity_range(state, c.joint_vec[jt_idx])] .= [ctlr_tau] 
-                c_taus[idx] = ctlr_tau 
+                c_taus[jt_idx] = ctlr_tau 
             end
             #TODO switch to push! ?
             c.taus = cat(c.taus, c_taus, dims=2)
@@ -173,7 +154,7 @@ Imposes a PID controller on one joint.
 Returns a controller torque value, bounded by the torque limits and some dτ/dt value. 
 """
 function PID_ctlr(torque, t, vel_act, idx, c)
-    actuated_idx = idx-2
+    actuated_idx = idx
     d_vel = c.des_vel[actuated_idx]
     vel_error = vel_act[1] - d_vel
     d_vel_error = (vel_error - c.vel_error_cache[actuated_idx])/(1/c.ctrl_freq)

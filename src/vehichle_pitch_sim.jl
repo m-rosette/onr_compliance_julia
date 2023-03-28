@@ -21,11 +21,11 @@ include("PIDCtlr_new.jl")
 println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
-urdf_file = joinpath("urdf", "bravo7_planar_toy_saab.urdf") 
+urdf_file = joinpath("urdf", "bravo7_planar_toy_saab copy.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, 0.0])
+mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, -9.81])
 
 delete!(vis)
 
@@ -49,7 +49,7 @@ base_frame = root_frame(mechanism_bravo_vehicle)
 frame_names_cob = ["vehicle_cob", "body1_1013_cob", "body2_1026_cob", "body3_1023_cob", "jaw_cob"]
 frame_names_com = ["vehicle_com", "body1_1013_com", "body2_1026_com", "body3_1023_com", "jaw_com"]
 # Assume default frame = COM
-# TODO -> verify all inertial terms in the URDF - they seem to be mismatched with the inertial terms from the alpha arm...
+# TODO: -> verify all inertial terms in the URDF - they seem to be mismatched with the inertial terms from the alpha arm...
     # bravo_1013_joint_link is correct (joint 3 in manual)
     # bravo_1026_0_joint_link is corrected (joint 4 in manual)
     # bravo_1023_0_joint_link NOT SURE (DONT KNOW in manual) (guessing joint 5 in manual)
@@ -107,7 +107,10 @@ function reset_to_equilibrium!(state)
     set_configuration!(state, joint1, pi/2)
     set_configuration!(state, joint2, pi)
     set_configuration!(state, joint3, pi)
-    set_configuration!(state, vehicle_joint, [.9777, 0, 0, 0, 0., 0., 0.])
+    set_configuration!(state, vehicle_joint, 0) # For fixed base joint with grav.
+    # set_configuration!(state, vehicle_joint, [.9777, 0, 0, 0, 0., 0., 0.]) # For floating base joint with no grav.
+
+    zero_velocity!(state)
 end
 
 # Constants ---------------------------------------------------------
@@ -122,10 +125,10 @@ do_scale_traj = true   # Scale the trajectory?
 show_animation = true
 
 # Create trajectory 
-params = trajParams[]
+# params = trajParams[]
 
-swap_times = Vector{Float64}()
-define_multiple_waypoints!(params, swap_times, 2)
+# swap_times = Vector{Float64}()
+# define_multiple_waypoints!(params, swap_times, 2)
 
 # # Reset the sim to the equilibrium position
 reset_to_equilibrium!(state)
@@ -133,9 +136,10 @@ reset_to_equilibrium!(state)
 ctlr_cache = CtlrCache(Δt, ctrl_freq, state)
 
 reset_to_equilibrium!(state)
+
 # Start up the controller
 ctlr_cache = CtlrCache(Δt, ctrl_freq, state)
-ctlr_cache.taus[:,1] = [0.; 0.; 0.; 0.; 0.; 10.; 0.; 0.; 0.; 0.]
+ctlr_cache.taus[:,1] = [0.; 0.; 0.; 0.; 0.; 10.; 0.; 0.; 0.]
 
 # ----------------------------------------------------------
 #                          Simulate
@@ -145,45 +149,50 @@ wp = gen_rand_waypoints_from_equil()
 
 traj = find_trajectory(wp) 
 
+# TODO: See if you can generate constant joint position (as shown in "test") -----------------------------------------------------------------
+    # Still would need to simulate the motion of qs[1]
+# test = fill([pi/2, pi, pi], 10002) # This could be used to generate qs[2:4]
+
+
 # # Keep trying until a good trajectory is found
-while traj === nothing
-    wp = gen_rand_waypoints_to_rest()
-    traj = find_trajectory(wp)
-end
+# while traj === nothing
+#     wp = gen_rand_waypoints_to_rest()
+#     traj = find_trajectory(wp)
+#     println("stuck here...?")
+# end
 
-# # Scale that trajectory to 1x-3x "top speed"
-if do_scale_traj == true
-    scaled_traj = scale_trajectory(traj...)
-else
-    scaled_traj = traj 
-end
-params = scaled_traj[1]
-duration = params.T
-poses = scaled_traj[2]
-vels = scaled_traj[3]
+# Scale that trajectory to 1x-3x "top speed"
+# if do_scale_traj == true
+#     scaled_traj = scale_trajectory(traj...)
+# else
+#     scaled_traj = traj 
+# end
+# params = scaled_traj[1]
+# duration = params.T
+# poses = scaled_traj[2]
+# vels = scaled_traj[3]
 
-# ----------------------------------------------------------
-#                          Simulate
-# ----------------------------------------------------------
+# # ----------------------------------------------------------
+# #                          Simulate
+# # ----------------------------------------------------------
 
-# Simulate the trajectory
-println("Simulating... ")   
-ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
+# # Simulate the trajectory
+# println("Simulating... ")   
+# # # ts, qs, vs = simulate_with_ext_forces(state, duration+duration_after_traj, hydro_calc!; Δt=Δt)
 # ts, qs, vs = simple_simulate_with_ext_forces(state, final_time, hydro_calc!, simple_control!; Δt=Δt)
 # ts, qs, vs = vanilla_pid_sim_ext_force(state, final_time, params, ctlr_cache, hydro_calc!, pid_control!; Δt=Δt)
-println("done.")
+# println("done.")
 
-# The last vehicle orientation Quaternion from simulation
-# last(qs)[1:4]
+# if show_animation == true
+#     print("Animating... ")
+#     setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
+#     open(mvis)
+#     println("done.")
+# end
 
-if show_animation == true
-    print("Animating... ")
-    setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
-    open(mvis)
-    println("done.")
-end
+# # # The last vehicle orientation Quaternion from simulation
+# # # last(qs)[1:4]
+# # # last_quaternion = last(qs)[1:4]
+# # # vehicle_final_rot = QuatRotation(last_quaternion)
 
-# last_quaternion = last(qs)[1:4]
-# vehicle_final_rot = QuatRotation(last_quaternion)
-
-# println(vehicle_final_rot)
+# # # println(vehicle_final_rot)

@@ -29,12 +29,12 @@ println("Libraries imported.")
 
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
-urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_toy_saab.urdf")   # Arm and Seabotix
+urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_toy_saab copy.urdf")   # Arm and Seabotix
 # urdf_file = joinpath(src_dir, "..", "urdf", "raven.urdf")
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
-mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, 0.0]) # gravity Default: = [0.0, 0.0, -9.81])
+mechanism_bravo_vehicle = parse_urdf(urdf_file) # gravity Default: = [0.0, 0.0, -9.81])
 
 delete!(vis)
 
@@ -46,6 +46,7 @@ vehicle_joint, joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
 # joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
 ~, vehicle_body, body1_1013, body2_1026, body3_1023 = bodies(mechanism_bravo_vehicle)
 
+println(vehicle_joint)
 
 # ----------------------------------------------------------
 #                 State Initialization
@@ -53,8 +54,9 @@ vehicle_joint, joint1, joint2, joint3 = joints(mechanism_bravo_vehicle)
 
 function reset_to_equilibrium!(state)
     zero!(state)
-    set_configuration!(state, vehicle_joint, [.9777, -.0019, 0.2098, .0079, 0., 0., 0.])
+    # set_configuration!(mvis, vehicle_joint, pi)
 end
+reset_to_equilibrium!(state)
 
 range_length = 10
 time = LinRange(0, 1, range_length)
@@ -74,6 +76,7 @@ for i in 1:range_length
         end
     else
         MeshCat.atframe(animation, i * frame_step) do 
+            set_configuration!(mvis, vehicle_joint, pi + i)
             set_configuration!(mvis, joint1, theta_combinations[i*50000, 1])
             set_configuration!(mvis, joint2, config2[i])
             set_configuration!(mvis, joint3, config3[i])
