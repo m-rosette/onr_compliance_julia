@@ -363,7 +363,8 @@
 
   <link name="bravo_base_link">
     <inertial>
-      <mass value="1.25"/>
+      <!-- <mass value="1.25"/> --> <!-- weight in air -->
+      <mass value="0.53216"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <origin xyz="-0.075 -0.006 -0.003"/>
       <inertia ixx="0.002108" ixy="0.00018199999999999998" ixz="-1.4999999999999999e-05" iyy="0.0025729999999999998" iyz="-2.1e-05" izz="0.003483"/>
     </inertial>
@@ -406,7 +407,8 @@
 
   <link name="bravo_1019_end_link">
     <inertial>
-      <mass value="1.55"/>
+      <!-- <mass value="1.55"/> --> <!-- weight in air -->
+      <mass value="0.95180"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <inertia ixx="0.011441999999999999" ixy="-0.000484" ixz="0.003405" iyy="0.01298" iyz="-0.0012649999999999998" izz="0.003202"/>
       <origin xyz="0.005 -0.001 0.016"/>
     </inertial>
@@ -450,12 +452,13 @@
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
     <axis xyz=" 0. 0. -1."/>
-    <origin rpy="0.0 -0.0 -3.14159" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
+    <origin rpy="0.0 -0.0 -0" xyz="-0.046 -0.0642 0"/> <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.046 0.0 0.0642"/>______________________________________________________________________________-->
   </joint>
 
   <link name="bravo_1013_joint_link">
     <inertial>
-      <mass value="1.14"/>
+      <!-- <mass value="1.14"/> --> <!-- weight in air -->
+      <mass value="0.67141"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <origin xyz="0.022 -0.029 0.001"/>
       <inertia ixx="0.0032129999999999997" ixy="-0.001548" ixz="-3.1e-05" iyy="0.002327" iyz="6e-06" izz="0.00434"/>
     </inertial>
@@ -548,7 +551,8 @@
   <link name="bravo_1026_0_joint_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.018 0.006 -0.117"/>  <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.017 -0.026 -0.002"_____________________________________-->
-      <mass value="1.14"/>
+      <!-- <mass value="1.14"/> --> <!-- weight in air -->
+      <mass value="0.63153"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <inertia ixx="0.021231999999999997" ixy="0.00033" ixz="-0.003738" iyy="0.022251999999999997" iyz="-0.0012779999999999998" izz="0.002054"/>
     </inertial>
     <visual>
@@ -578,7 +582,8 @@
 
   <link name="bravo_1026_1_joint_link">
     <inertial>
-      <mass value="1.03"/>
+      <!-- <mass value="1.03"/> --> <!-- weight in air -->
+      <mass value="0.60129"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <origin xyz="0.020 -0.024 0.001"/>
       <inertia ixx="0.00243" ixy="-0.001144" ixz="-3.9999999999999996e-05" iyy="0.002026" iyz="1.1e-05" izz="0.00333"/>
     </inertial>
@@ -628,7 +633,9 @@
   <link name="bravo_1023_0_joint_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.003 -0.098"/>  <!-- Old: rpy="0.0 -0.0 0.0" xyz="0.0 0.003 -0.098"/>______________________-->
-      <mass value="0.333"/>
+      <!-- <mass value="0.333"/> --> <!-- This was the original... not sure where it comes from. Is different than bravo manual-->
+      <!-- Using mass properties from Bravo KD Properties manual -->
+      <mass value="0.04820"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <inertia ixx="0.003709" ixy="-2e-06" ixz="-4e-06" iyy="0.003734" iyz="0.0" izz="7.9e-05"/>
     </inertial>
     <visual>
@@ -660,6 +667,8 @@
     <inertial>
       <origin xyz="0.0 0.003 -0.098"/>
       <mass value="1.04"/>
+      <!-- <mass value="1.04"/> --> <!-- weight in air -->
+      <mass value="0.56144"/> <!-- buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <inertia ixx="0.022359" ixy="1e-06" ixz="-1.8999999999999998e-05" iyy="0.022362999999999997" iyz="1.4999999999999999e-05" izz="0.000936"/>
     </inertial>
     <visual>
@@ -745,7 +754,8 @@
   <link name="bravo_finger_jaws_rs2_300_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.05 0.0 0.0"/>
-      <mass value="0.24"/>
+      <!-- <mass value="0.24"/> --> <!-- weight in air -->
+      <mass value="0.15524"/> <!-- (divided by two, for each jaw) buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <inertia ixx="0.000244" ixy="-1.2e-05" ixz="0.0" iyy="0.00113" iyz="1e-06" izz="0.001178"/>
     </inertial>
     <visual>
@@ -766,7 +776,8 @@
   <link name="bravo_finger_jaws_rs2_301_link">
     <inertial>
       <origin rpy="0.0 -0.0 0.0" xyz="0.05 0.0 0.0"/>
-      <mass value="0.24"/>
+      <!-- <mass value="0.24"/> --> <!-- weight in air -->
+      <mass value="0.15524"/> <!-- (divided by two, for each jaw) buoyancy balanced weight. calc from buoyancy_setup.jl -->
       <inertia ixx="0.000244" ixy="-1.2e-05" ixz="0.0" iyy="0.00113" iyz="1e-06" izz="0.001178"/>
     </inertial>
     <visual>

@@ -67,7 +67,7 @@ setup_frames!(mechanism_bravo_vehicle, frame_names_cob, frame_names_com, cob_vec
 # KEEP ARM BASE VALUES AT END OF LIST for HydroCalc
 rho = 997
 # TODO: Need to verify vehicle volume calc
-volumes = [60 / (.001*rho), 0.60, 1.94, 0.47, 0.51, 0.43, 0.48, 0.16, 0.72] # vehicle, ........, armbase
+volumes = [60 / (.001*rho)] #, 0.60, 1.94, 0.47, 0.51, 0.43, 0.48, 0.16, 0.72] # vehicle, ........, armbase
 buoy_force_mags = volumes * rho * 9.81 * .001
 buoy_lin_forces = []
 for mag in buoy_force_mags
@@ -76,7 +76,7 @@ for mag in buoy_force_mags
 end
 
 # TODO: Need to verify vehicle mass
-masses = [60, 1.55, 1.98, 1.14, 1.14, 1.03, 1.04, 0.47, 1.25] # vehicle, ........, armbase
+masses = [60] #, 1.55, 1.98, 1.14, 1.14, 1.03, 1.04, 0.47, 1.25] # vehicle, ........, armbase
 grav_forces = masses * 9.81
 grav_lin_forces = []
 for f_g in grav_forces
@@ -121,5 +121,3 @@ println(" radians")
 final_pitch_deg = final_pitch * (180 / pi)
 print(round(final_pitch_deg, digits=3))
 println(" degrees")
-
-joints(mechanism_bravo_vehicle)
