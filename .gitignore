@@ -5,3 +5,5 @@
 
 test/WorkspaceData/Archive/bravo_workspace.mat
 test/WorkspaceData/Archive/
+
+urdf/planar_configs/urdf

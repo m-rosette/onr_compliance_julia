@@ -8,17 +8,21 @@ using CoordinateTransformations
 using GeometryBasics
 using Printf, Plots, CSV, Tables, ProgressBars, Revise
 using Random
+# using DataFrames
 using onr_compliance_julia
 
 include("FrameSetup_simple.jl")
 include("HydroCalc_simple.jl")
 include("SimWExt_simple.jl")
-# include("SimpleController.jl")
 
 println("Libraries imported.")
 
+num_config = 100
+final_pitches = Array{Float64}(undef, num_config)
+
+i = 80
 # Loading files ------------------------------------------------------
-urdf_file = joinpath("urdf", "bravo7_planar_toy_saab copy.urdf") 
+urdf_file = joinpath("urdf/planar_configs/urdf", "bravo_config_" * "$i.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
@@ -43,14 +47,14 @@ base_frame = root_frame(mechanism_bravo_vehicle)
 # ----------------------------------------------------------
 # frame_names_cob = ["vehicle_cob", "body1_1013_cob", "body2_1026_cob", "body3_1023_cob", "jaw_cob"]
 # frame_names_com = ["vehicle_com", "body1_1013_com", "body2_1026_com", "body3_1023_com", "jaw_com"]
-frame_names_cob = ["vehicle_cob", "0_cob", "1_cob", "2_cob", "3_cob", "4_cob", "5_cob", "6_cob", "7_cob",]
-frame_names_com = ["vehicle_com", "0_com", "1_com", "2_com", "3_com", "4_com", "5_com", "6_com", "7_com",]
+frame_names_cob = ["vehicle_cob"] #, "0_cob", "1_cob", "2_cob", "3_cob", "4_cob", "5_cob", "6_cob", "7_cob",]
+frame_names_com = ["vehicle_com"] #, "0_com", "1_com", "2_com", "3_com", "4_com", "5_com", "6_com", "7_com",]
 # Assume default frame = COM 
 # TODO: Verify the location of the COB and COM on vehicle body
 # cob_vecs = [SVector{3, Float64}([0.0, 0.0, 0.02]), SVector{3, Float64}([0.033, -0.043, -0.07]), SVector{3, Float64}([0.020, 0.012, -0.140]), SVector{3, Float64}([0.033, -0.038, -0.008]), SVector{3, Float64}([0.0, 0.0, 0.0])]
 # com_vecs = [SVector{3, Float64}([0.0, 0.0, 0.0]), SVector{3, Float64}([0.022, -.029, 0.001]), SVector{3, Float64}([0.017, -0.026, -0.002]), SVector{3, Float64}([0.020, -0.024, 0.001]), SVector{3, Float64}([0.0, 0.0, 0.0])]
-cob_vecs = [SVector{3, Float64}([0.0, 0.0, 0.02]), SVector{3, Float64}([-0.018, -0.003, -0.003]), SVector{3, Float64}([0.027, -0.011, 0.092]), SVector{3, Float64}([0.145, 0.035, -0.001]), SVector{3, Float64}([0.033, -0.043, -0.07]), SVector{3, Float64}([0.020, 0.012, -0.140]), SVector{3, Float64}([0.033, -0.038, -0.008]), SVector{3, Float64}([0.0, 0.0, -0.152]), SVector{3, Float64}([0.028, 0.001, 0.0])]
-com_vecs = [SVector{3, Float64}([0.0, 0.0, 0.0]), SVector{3, Float64}([-0.018, -.004, -0.001]), SVector{3, Float64}([0.017, -.007, 0.057]), SVector{3, Float64}([0.117, 0.015, 0.006]), SVector{3, Float64}([0.022, -.029, 0.001]), SVector{3, Float64}([0.018, 0.006, -0.117]), SVector{3, Float64}([0.020, -0.024, 0.001]), SVector{3, Float64}([0, 0, -0.128]), SVector{3, Float64}([0.028, -0.001, 0.0])]
+cob_vecs = [SVector{3, Float64}([0.0, 0.0, 0.02])] #, SVector{3, Float64}([-0.018, -0.003, -0.003]), SVector{3, Float64}([0.027, -0.011, 0.092]), SVector{3, Float64}([0.145, 0.035, -0.001]), SVector{3, Float64}([0.033, -0.043, -0.07]), SVector{3, Float64}([0.020, 0.012, -0.140]), SVector{3, Float64}([0.033, -0.038, -0.008]), SVector{3, Float64}([0.0, 0.0, -0.152]), SVector{3, Float64}([0.028, 0.001, 0.0])]
+com_vecs = [SVector{3, Float64}([0.0, 0.0, 0.0])] #, SVector{3, Float64}([-0.018, -.004, -0.001]), SVector{3, Float64}([0.017, -.007, 0.057]), SVector{3, Float64}([0.117, 0.015, 0.006]), SVector{3, Float64}([0.022, -.029, 0.001]), SVector{3, Float64}([0.018, 0.006, -0.117]), SVector{3, Float64}([0.020, -0.024, 0.001]), SVector{3, Float64}([0, 0, -0.128]), SVector{3, Float64}([0.028, -0.001, 0.0])]
 
 cob_frames = []
 com_frames = []
@@ -95,7 +99,7 @@ end
 state = MechanismState(mechanism_bravo_vehicle)
 final_time = 5
 Δt = 1e-3
-show_animation = true # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
+show_animation = false # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
 # Reset the sim to the equilibrium position
 reset_to_equilibrium!(state)
@@ -115,9 +119,10 @@ end
 println(" ")
 println("Final Pitch:")
 final_pitch = last(qs)[1]
-print(round(final_pitch, digits=3))
+
+print(round(final_pitch, digits=5))
 println(" radians")
 
-final_pitch_deg = final_pitch * (180 / pi)
-print(round(final_pitch_deg, digits=3))
-println(" degrees")
+# final_pitch_deg = final_pitch * (180 / pi)
+# print(round(final_pitch_deg, digits=3))
+# println(" degrees")
