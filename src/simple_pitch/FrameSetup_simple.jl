@@ -4,6 +4,7 @@
 
 function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vecs, cob_frames, com_frames)
     num_joints = length(joints(mech))
+    # ~, vehicle_body = bodies(mech)
 
     # Get the body
     ~, bod = bodies(mech)
