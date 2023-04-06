@@ -2,15 +2,14 @@ clear
 clc
 
 workspace_data = load('WorkspaceData/pitch_data/new_space_100.mat');
-vehicle_pitch_data = load('WorkspaceData/pitch_data/new_final_pitch_disc_100.csv');
+vehicle_pitch_data = load('WorkspaceData/pitch_data/corrected_final_pitch_disc_100.csv');
 
 reachable_space = load("WorkspaceData\bravo_workspace_corrected.mat");
 reachable_ee_points = reachable_space.ee_points;
 
 % Do you need to do any filtering?
 for i = 1:length(vehicle_pitch_data)
-    if vehicle_pitch_data(i) > 0.25 | vehicle_pitch_data(i) < 0.05 && vehicle_pitch_data(i) > 0
-%         vehicle_pitch_data(i) = vehicle_pitch_data(i - 1);
+    if vehicle_pitch_data(i) > 0.22 | vehicle_pitch_data(i) < 0.05 && vehicle_pitch_data(i) > 0
         vehicle_pitch_data(i) = 0.15;
     end
 end
@@ -55,6 +54,7 @@ h.XLabel = "Bravo EE-Position - X (m)";
 h.YLabel = "Bravo EE-Position - Z (m)";
 h.XDisplayLabels = x_label_list;
 h.YDisplayLabels = x_label_list;
+h.GridVisible = "off";
 
 ax = axes;
 joint_angles = [3*pi/4; 3*pi/4; 3*pi/4];

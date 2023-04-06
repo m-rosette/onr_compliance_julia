@@ -29,7 +29,7 @@ num_config = disc_space ^ 2
 final_pitches = Array{Float64}(undef, num_config)
 
 i = 0
-# global pitch = 0
+global pitch = 0
 
 while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
     println(" Iteration: ")
@@ -43,7 +43,7 @@ while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
     end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/new_configs_disc_100", "bravo_config_" * "$i.urdf") 
+    urdf_file = joinpath("urdf/planar_configs/urdf/corrected_configs_disc_100", "bravo_config_" * "$i.urdf") 
 
     # Visualizer ---------------------------------------------------------
     # vis = Visualizer()
@@ -118,7 +118,7 @@ while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
 
     # Constants ---------------------------------------------------------
     state = MechanismState(mechanism_bravo_vehicle)
-    final_time = 5
+    final_time = 10
     Δt = 1e-3
     show_animation = false # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
@@ -147,5 +147,5 @@ end
 
 println(final_pitches)
 
-CSV.write("test/WorkspaceData/pitch_data/new_final_pitch_disc_100.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/corrected_final_pitch_disc_100.csv", Tables.table(final_pitches), writeheader=false)
 # CSV.write("test/WorkspaceData/pitch_data/can_delete.csv", Tables.table(final_pitches), writeheader=false)

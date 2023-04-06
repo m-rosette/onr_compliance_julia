@@ -54,7 +54,7 @@ if run_urdf_gen == True:
                     origin = joint.find('origin')
                     
                     # Save the new collision free config as the new_orientation
-                    new_orient = origin.attrib['rpy'] = f'0 {np.pi} {config[joint_num] - np.pi}' # Subtract by pi to match the Julia orientation
+                    new_orient = origin.attrib['rpy'] = f'0 {np.pi} {-config[joint_num]}' # Subtract by pi to match the Julia orientation
                     joint_num += 1  # Increment which joint in question (0 = axis_f, 1 = axis_e, 2 = axis_c)
 
             # Catch any KeyErrors (some joint elements dont have 'type' attributes)
@@ -62,4 +62,4 @@ if run_urdf_gen == True:
                 continue
         
         # Save the new config as its own URDF
-        tree.write(f'urdf/new_configs_disc_100/bravo_config_{count}.urdf', xml_declaration=True)
+        tree.write(f'urdf/corrected_configs_disc_100/bravo_config_{count}.urdf', xml_declaration=True)
