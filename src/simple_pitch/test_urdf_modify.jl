@@ -17,23 +17,29 @@ include("SimWExt_simple.jl")
 
 println("Libraries imported.")
 
-num_config = 10
+disc_space = 100
+
+num_config = disc_space ^ 2
 final_pitches = Array{Float64}(undef, num_config)
 i = 0
-global pitch = 0.1
+global pitch = 0
 while pitch >= 0 && pitch < 0.5 && i <= num_config - 1
-# for i in 1:num_config - 1
+    println(" Iteration: ")
+    println("--------    $i    --------")
+    println("   ")
+
+    # for i in 1:num_config - 1
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf", "bravo_config_" * "$i.urdf") 
+    urdf_file = joinpath("urdf/planar_configs/urdf/configs_disc_100", "bravo_config_" * "$i.urdf") 
 
     # Visualizer ---------------------------------------------------------
-    vis = Visualizer();
+    # vis = Visualizer()
     mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, -9.81])
 
-    delete!(vis);
+    # delete!(vis);
 
     # Visulaize the URDFs
-    mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo]);
+    # mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo]);
 
     # Name the joints and bodies of the mechanism
     vehicle_joint = joints(mechanism_bravo_vehicle)
@@ -90,7 +96,7 @@ while pitch >= 0 && pitch < 0.5 && i <= num_config - 1
         push!(grav_lin_forces, lin_force)
     end
 
-    println("CoM and CoB frames initialized. \n")
+    # println("CoM and CoB frames initialized. \n")
 
     function reset_to_equilibrium!(state)
         zero!(state)
@@ -106,16 +112,16 @@ while pitch >= 0 && pitch < 0.5 && i <= num_config - 1
     # Reset the sim to the equilibrium position
     reset_to_equilibrium!(state)
 
-    println("Simulating...")
+    # println("Simulating...")
     ts, qs, vs = simulate_with_ext_forces(state, final_time, hydro_calc!; Δt=Δt)
-    println("done.")
+    # println("done.")
 
-    if show_animation == true
-        print("Animating... ")
-        setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
-        open(mvis)
-        println("done.")
-    end
+    # if show_animation == true
+    #     print("Animating... ")
+    #     setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
+    #     open(mvis)
+    #     println("done.")
+    # end
 
     # Output the final pitch value of the simulation --------------------
     pitch = last(qs)[1]
@@ -126,4 +132,6 @@ while pitch >= 0 && pitch < 0.5 && i <= num_config - 1
     end     
 end
 
-println(final_pitches)
+# println(final_pitches)
+
+CSV.write("test/WorkspaceData/pitch_data/final_pitch_disc_100.csv", Tables.table(final_pitches), writeheader=false)
