@@ -8,7 +8,7 @@ using CoordinateTransformations
 using GeometryBasics
 using Printf, Plots, CSV, Tables, ProgressBars, Revise
 using Random
-# using DataFrames
+using MAT
 using onr_compliance_julia
 
 include("FrameSetup_simple.jl")
@@ -17,20 +17,33 @@ include("SimWExt_simple.jl")
 
 println("Libraries imported.")
 
+# Load collision free joint configurations from .mat file
+src_dir = dirname(pathof(onr_compliance_julia))
+file = joinpath(src_dir, "..", "urdf/planar_configs", "new_space_100.mat")
+mat_file = matopen(file)
+discretized_index = read(mat_file, "closestIndex")
+
 disc_space = 100
 
 num_config = disc_space ^ 2
 final_pitches = Array{Float64}(undef, num_config)
+
 i = 0
-global pitch = 0
-while pitch >= 0 && pitch < 0.5 && i <= num_config - 1
+# global pitch = 0
+
+while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
     println(" Iteration: ")
     println("--------    $i    --------")
     println("   ")
 
-    # for i in 1:num_config - 1
+    if discretized_index[i + 1] == 0
+        global i = i + 1
+        final_pitches[i] = 0
+        continue
+    end
+
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/configs_disc_100", "bravo_config_" * "$i.urdf") 
+    urdf_file = joinpath("urdf/planar_configs/urdf/new_configs_disc_100", "bravo_config_" * "$i.urdf") 
 
     # Visualizer ---------------------------------------------------------
     # vis = Visualizer()
@@ -132,6 +145,7 @@ while pitch >= 0 && pitch < 0.5 && i <= num_config - 1
     end     
 end
 
-# println(final_pitches)
+println(final_pitches)
 
-CSV.write("test/WorkspaceData/pitch_data/final_pitch_disc_100.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/new_final_pitch_disc_100.csv", Tables.table(final_pitches), writeheader=false)
+# CSV.write("test/WorkspaceData/pitch_data/can_delete.csv", Tables.table(final_pitches), writeheader=false)

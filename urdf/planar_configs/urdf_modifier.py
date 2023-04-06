@@ -14,7 +14,7 @@ import mat73
 # configs = configs_file['closest_config'] # Save only the configs and not the column headers
 # print(configs)
 
-configs_file = mat73.loadmat('config_space_for_pitch_100.mat')
+configs_file = mat73.loadmat('new_space_100.mat')
 configs = configs_file['configs']
 
 # Initialize urdf to parse through
@@ -62,4 +62,4 @@ if run_urdf_gen == True:
                 continue
         
         # Save the new config as its own URDF
-        tree.write(f'urdf/configs_disc_100/bravo_config_{count}.urdf', xml_declaration=True)
+        tree.write(f'urdf/new_configs_disc_100/bravo_config_{count}.urdf', xml_declaration=True)
