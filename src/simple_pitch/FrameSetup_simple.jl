@@ -22,14 +22,16 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
     if !(RigidBodyDynamics.is_fixed_to_body(bod, frame_com))
         add_frame!(bod, com_transform)
         push!(com_frames, frame_com)
-        # setelement!(mvis, frame_com)
+        setelement!(mvis, frame_com)
     end
 
     bravobase_com_wrt_linkframe = SVector{3, Float64}([-0.018, -0.004, -0.001]) # Sourced from link 0 in Bravo K&D manual
 
     # Arm base is rigidly attached to vehicle, so it has a transform in the vehicle's frame. It's the 39th body in the URDF attached to the vehicle. WITH RESPECT TO FLOATING BASE JOINT
-    link = 39
+    # link = 39 # Use this for fixed joint urdfs
+    link = 4
     linkframe_wrt_vehframe = translation(RigidBodyDynamics.frame_definitions(vehicle_body)[link])
+    
     # println(linkframe_wrt_vehframe)
     # # IF THE ARM IS ROTATED THIS HAS TO CHANGE!!!!
     bravobase_com_wrt_vehframe = bravobase_com_wrt_linkframe + linkframe_wrt_vehframe
@@ -40,8 +42,8 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
         add_frame!(vehicle_body, com_transform)
         push!(cob_frames, bravobase_com_frame)
         push!(com_frames, bravobase_com_frame)
-        # setelement!(mvis, bravobase_com_frame)
+        setelement!(mvis, bravobase_com_frame)
     end
-    # print("THIS SHOULD SAY after_bravo_joint: ")
-    # println(RigidBodyDynamics.frame_definitions(vehicle_body)[link].from)
+    print("THIS SHOULD SAY after_bravo_joint: ")
+    println(RigidBodyDynamics.frame_definitions(vehicle_body)[link].from)
 end

@@ -28,5 +28,6 @@ bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
 % end
 
 row = 10000;
-config = file.collision_free_angles(row, :)
+% config = file.collision_free_angles(row, :);
+config = [0; 0; 0]';
 show(bravo, config');

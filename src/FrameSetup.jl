@@ -4,7 +4,7 @@
 
 function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vecs, cob_frames, com_frames)
     num_joints = length(joints(mech))
-    vis_element = 5
+    vis_element = 3
     for i in 1:num_joints
         bod = bodies(mech)[i+1]
         frame_cob = CartesianFrame3D(frame_names_cob[i])
@@ -13,9 +13,9 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
         com_vec = com_vecs[i]
         cob_transform = Transform3D(frame_cob, default_frame(bod), cob_vec)
         com_transform = Transform3D(frame_com, default_frame(bod), com_vec)
-        if i == vis_element
-            setelement!(mvis, default_frame(bod))
-        end 
+        # if i == vis_element
+        #     setelement!(mvis, default_frame(bod))
+        # end 
         if !(RigidBodyDynamics.is_fixed_to_body(bod, frame_cob))
             add_frame!(bod, cob_transform)
             push!(cob_frames, frame_cob)
@@ -37,7 +37,7 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
     # Arm base is rigidly attached to vehicle, so it has a transform in the vehicle's frame. It's the 19th body in the URDF attached to the vehicle. WITH RESPECT TO FLOATING BASE JOINT
     # TODO: It's between 44th and 45th body in the URDF attached to the vehicle. WITH RESPECT TO FIXED BASE JOINT (How do I fix this?)
 
-    link = 44
+    link = 19
     linkframe_wrt_vehframe = translation(RigidBodyDynamics.frame_definitions(vehicle_body)[link])
     # println(linkframe_wrt_vehframe)
     # # IF THE ARM IS ROTATED THIS HAS TO CHANGE!!!!
@@ -49,7 +49,7 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
         add_frame!(vehicle_body, com_transform)
         push!(cob_frames, bravobase_com_frame)
         push!(com_frames, bravobase_com_frame)
-        # setelement!(mvis, bravobase_com_frame)
+        setelement!(mvis, bravobase_com_frame)
     end
     # print("THIS SHOULD SAY after_bravo_joint: ")
     # println(RigidBodyDynamics.frame_definitions(vehicle_body)[link].from)
