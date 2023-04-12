@@ -4,7 +4,7 @@
 
 function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vecs, cob_frames, com_frames)
     num_joints = length(joints(mech))
-    vis_element = 3
+    vis_element = 2
     for i in 1:num_joints
         bod = bodies(mech)[i+1]
         frame_cob = CartesianFrame3D(frame_names_cob[i])
@@ -20,14 +20,14 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
             add_frame!(bod, cob_transform)
             push!(cob_frames, frame_cob)
             if i == vis_element
-                setelement!(mvis, frame_cob, 0.3)    # visualizes COB frames in MeshCat
+                # setelement!(mvis, frame_cob, 0.3)    # visualizes COB frames in MeshCat
             end
         end
         if !(RigidBodyDynamics.is_fixed_to_body(bod, frame_com))
             add_frame!(bod, com_transform)
             push!(com_frames, frame_com)
             if i == vis_element
-                setelement!(mvis, frame_com, 0.2)    # visualizes COM frames in MeshCat
+                # setelement!(mvis, frame_com, 0.2)    # visualizes COM frames in MeshCat
             end
         end
     end

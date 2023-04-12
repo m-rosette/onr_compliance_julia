@@ -26,7 +26,8 @@ i = 2224
 
 # Loading files ------------------------------------------------------
 # urdf_file = joinpath("urdf/planar_configs/urdf/new_configs_disc_100", "bravo_config_" * "$i.urdf") 
-urdf_file = joinpath("urdf/planar_configs/urdf", "bravo7_planar_start.urdf") 
+# urdf_file = joinpath("urdf/planar_configs/urdf", "bravo7_planar_start.urdf") 
+urdf_file = joinpath("urdf", "arm_vehicle.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
@@ -84,7 +85,7 @@ for mag in buoy_force_mags
 end
 
 # TODO: Need to verify vehicle mass
-masses = [0] #, 1.55, 1.98, 1.14, 1.14, 1.03, 1.04, 0.47, 1.25] # vehicle, ........, armbase
+masses = [60] #, 1.55, 1.98, 1.14, 1.14, 1.03, 1.04, 0.47, 1.25] # vehicle, ........, armbase
 grav_forces = masses * 9.81
 global grav_lin_forces = []
 for f_g in grav_forces
@@ -120,6 +121,6 @@ if show_animation == true
 end
 
 # Output the final pitch value of the simulation --------------------
-# pitch = last(qs)[1]
+pitch = last(qs)[1]
 
-# println(final_pitches)
+println(pitch)

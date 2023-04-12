@@ -115,9 +115,9 @@ println("CoM and CoB frames initialized. \n")
 
 function reset_to_equilibrium!(state)
     zero!(state)
-    set_configuration!(state, joint1, pi/2)
-    set_configuration!(state, joint2, pi)
-    set_configuration!(state, joint3, pi)
+    set_configuration!(state, joint1, pi)
+    set_configuration!(state, joint2, pi/2)
+    set_configuration!(state, joint3, pi/2)
     # set_configuration!(state, vehicle_joint, 0) # For fixed base joint with grav.
     set_configuration!(state, vehicle_joint, [.9777, 0, 0, 0, 0., 0., 0.]) # For floating base joint with no grav.
 
