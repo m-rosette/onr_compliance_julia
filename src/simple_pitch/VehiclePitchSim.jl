@@ -25,13 +25,14 @@ discretized_index = read(mat_file, "closestIndex")
 
 disc_space = 100
 
-num_config = disc_space ^ 2
-final_pitches = Array{Float64}(undef, num_config)
+global num_config = disc_space ^ 2
+global final_pitches = Array{Float64}(undef, num_config)
 
-i = 0
+global i = 0
 global pitch = 0
 
-while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
+# while pitch >= 0 && pitch <= 0.3 && i <= num_config - 1
+while i <= num_config - 1
     println(" Iteration: ")
     println("--------    $i    --------")
     println("   ")
@@ -43,7 +44,7 @@ while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
     end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/corrected_configs_disc_100", "bravo_config_" * "$i.urdf") 
+    urdf_file = joinpath("urdf/planar_configs/urdf/new_urdf_configs_disc_100", "bravo_config_" * "$i.urdf")
 
     # Visualizer ---------------------------------------------------------
     # vis = Visualizer()
@@ -93,7 +94,7 @@ while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
     rho = 997
     # TODO: Need to verify vehicle volume calc
     volumes = [60 / (.001*rho)] #, 0.60, 1.94, 0.47, 0.51, 0.43, 0.48, 0.16, 0.72] # vehicle, ........, armbase
-    buoy_force_mags = volumes * rho * 9.81 * .001
+    buoy_force_mags = volumes * rho * .001
     global buoy_lin_forces = []
     for mag in buoy_force_mags
         lin_force = FreeVector3D(base_frame, [0.0, 0.0, mag])
@@ -102,7 +103,7 @@ while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
 
     # TODO: Need to verify vehicle mass
     masses = [60] #, 1.55, 1.98, 1.14, 1.14, 1.03, 1.04, 0.47, 1.25] # vehicle, ........, armbase
-    grav_forces = masses * 9.81
+    grav_forces = masses
     global grav_lin_forces = []
     for f_g in grav_forces
         lin_force = FreeVector3D(base_frame, [0.0, 0.0, -f_g])
@@ -134,18 +135,19 @@ while pitch >= 0 && pitch < 0.3 && i <= num_config - 1
     #     setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
     #     open(mvis)
     #     println("done.")
-    # end
+    # end 
 
     # Output the final pitch value of the simulation --------------------
     pitch = last(qs)[1]
     
-    if pitch >= 0 && pitch < 0.5
+    if pitch >= 0
         global i = i + 1
         final_pitches[i] = pitch
+        println(pitch)
     end     
 end
 
-println(final_pitches)
+# println(final_pitches)
 
-CSV.write("test/WorkspaceData/pitch_data/corrected_final_pitch_disc_100.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/new_urdf_3_pitch_data_100.csv", Tables.table(final_pitches), writeheader=false)
 # CSV.write("test/WorkspaceData/pitch_data/can_delete.csv", Tables.table(final_pitches), writeheader=false)

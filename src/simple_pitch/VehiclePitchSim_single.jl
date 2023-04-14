@@ -22,12 +22,13 @@ disc_space = 1
 num_config = disc_space ^ 2
 final_pitches = Array{Float64}(undef, num_config)
 
-i = 2224
+i = 2032
+# i = 2144
 
 # Loading files ------------------------------------------------------
-# urdf_file = joinpath("urdf/planar_configs/urdf/new_configs_disc_100", "bravo_config_" * "$i.urdf") 
+urdf_file = joinpath("urdf/planar_configs/urdf/new_urdf_configs_disc_100", "bravo_config_" * "$i.urdf") 
 # urdf_file = joinpath("urdf/planar_configs/urdf", "bravo7_planar_start.urdf") 
-urdf_file = joinpath("urdf", "arm_vehicle.urdf") 
+# urdf_file = joinpath("urdf", "arm_vehicle.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
@@ -77,7 +78,7 @@ setup_frames!(mechanism_bravo_vehicle, frame_names_cob, frame_names_com, cob_vec
 rho = 997
 # TODO: Need to verify vehicle volume calc
 volumes = [60 / (.001*rho)] #, 0.60, 1.94, 0.47, 0.51, 0.43, 0.48, 0.16, 0.72] # vehicle, ........, armbase
-buoy_force_mags = volumes * rho * 9.81 * .001
+buoy_force_mags = volumes * rho * .001
 global buoy_lin_forces = []
 for mag in buoy_force_mags
     lin_force = FreeVector3D(base_frame, [0.0, 0.0, mag])
@@ -86,7 +87,7 @@ end
 
 # TODO: Need to verify vehicle mass
 masses = [60] #, 1.55, 1.98, 1.14, 1.14, 1.03, 1.04, 0.47, 1.25] # vehicle, ........, armbase
-grav_forces = masses * 9.81
+grav_forces = masses
 global grav_lin_forces = []
 for f_g in grav_forces
     lin_force = FreeVector3D(base_frame, [0.0, 0.0, -f_g])
@@ -121,6 +122,6 @@ if show_animation == true
 end
 
 # Output the final pitch value of the simulation --------------------
-pitch = last(qs)[1]
+pitch = last(qs)[1] * (180 / pi)
 
 println(pitch)

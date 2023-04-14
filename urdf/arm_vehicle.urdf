@@ -13,7 +13,7 @@
     <parent link="new_base"/>
     <child link="vehicle_base_link"/>
     <axis xyz=" 0. 1. 0."/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0.125"/>
   </joint>
 
   <!-- ======================================= -->
@@ -62,7 +62,7 @@
       <material name="yellow_v"/>
     </visual>
     <inertial>
-      <mass value="30"/> 
+      <mass value="40"/> 
       <origin xyz="0.0 0.0 -0.06"/>
       <inertia ixx="6.31" ixy="0.0" ixz="0.22" 
       iyy="10.15" iyz="0.0" 
@@ -78,7 +78,7 @@
       <material name="yellow_v"/>
     </visual>
     <inertial>
-      <mass value="30"/> 
+      <mass value="20"/> 
       <origin xyz="0.0 0.0 -0.06"/>
       <inertia ixx="6.31" ixy="0.0" ixz="0.22" 
       iyy="10.15" iyz="0.0" 
@@ -364,7 +364,7 @@
   <joint name="ee_link_joint" type="fixed">
     <parent link="bravo_1023_1_joint_link"/>
     <child link="ee_link"/>
-    <origin rpy="0 0 -1.5707" xyz="0 0 0.120"/>
+    <origin rpy="0 0 -1.5707" xyz="0 0.120 0"/>
   </joint>
   <link name="bravo_base_link">
     <inertial>
@@ -714,8 +714,8 @@
     <limit effort="1000.0" lower="0.0" upper="0.035" velocity="10.0"/>
     <parent link="bravo_1023_1_joint_link"/>
     <child link="bravo_push_rod"/>
-    <axis xyz="0. 0. 1."/>
-    <origin rpy="-1.5707 -1.5706999999997038 0.0" xyz="0.008999999958245167 0.0 0.12560000008350966"/>
+    <axis xyz="0. 0. -1."/>
+    <origin rpy="-1.5707 0.0 1.5706999999997038" xyz="0.008999999958245167 0.12560000008350966 0.0"/>
   </joint>
   <joint name="bravo_finger_jaws_rs2_300_joint" type="fixed">
     <limit effort="400.0" lower="0.0" upper="1.0" velocity="3.0"/>
@@ -771,6 +771,6 @@
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
     <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0.0 0.0 0" xyz="0.046 0.0642 0.0"/>
+    <origin rpy="0.0 0.0 1.5707" xyz="0.046 0.0642 0.0"/>
   </joint>
 </robot>

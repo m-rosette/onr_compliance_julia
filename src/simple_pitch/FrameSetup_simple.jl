@@ -22,7 +22,7 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
     if !(RigidBodyDynamics.is_fixed_to_body(bod, frame_com))
         add_frame!(bod, com_transform)
         push!(com_frames, frame_com)
-        setelement!(mvis, frame_com)
+        # setelement!(mvis, frame_com)
     end
 
     bravobase_com_wrt_linkframe = SVector{3, Float64}([-0.018, -0.004, -0.001]) # Sourced from link 0 in Bravo K&D manual
@@ -42,8 +42,29 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
         add_frame!(vehicle_body, com_transform)
         push!(cob_frames, bravobase_com_frame)
         push!(com_frames, bravobase_com_frame)
-        setelement!(mvis, bravobase_com_frame)
+        # setelement!(mvis, bravobase_com_frame)
     end
-    print("THIS SHOULD SAY after_bravo_joint: ")
-    println(RigidBodyDynamics.frame_definitions(vehicle_body)[link].from)
+    # print("THIS SHOULD SAY after_bravo_joint: ")
+    # println(RigidBodyDynamics.frame_definitions(vehicle_body)[link].from)
+
+    # testing_frames = true
+
+    # # Showing mesh coord frame
+    # if testing_frames == true
+    #     link = 62
+    #     # TODO: Need to work with link frame 58, 60, 62 (jaws)
+    #     linkframe_wrt_vehframe = translation(RigidBodyDynamics.frame_definitions(vehicle_body)[link])
+        
+    #     # println(linkframe_wrt_vehframe)
+    #     # # IF THE ARM IS ROTATED THIS HAS TO CHANGE!!!!
+    #     bravobase_com_wrt_vehframe = bravobase_com_wrt_linkframe + linkframe_wrt_vehframe
+    #     bravobase_com_frame = CartesianFrame3D("armbase_com_cob")
+    #     com_transform = Transform3D(bravobase_com_frame, default_frame(vehicle_body), bravobase_com_wrt_vehframe)
+
+    #     add_frame!(vehicle_body, com_transform)
+    #     push!(cob_frames, bravobase_com_frame)
+    #     push!(com_frames, bravobase_com_frame)
+    #     setelement!(mvis, bravobase_com_frame)
+    #     println(RigidBodyDynamics.frame_definitions(vehicle_body)[link].from)
+    # end
 end
