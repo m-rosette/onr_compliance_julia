@@ -771,6 +771,6 @@
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
     <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0.0 0.0 1.5707" xyz="0.046 0.0642 0.0"/>
+    <origin rpy="0.0 0.0 1.2" xyz="0.046 0.0642 0.0"/>
   </joint>
 </robot>

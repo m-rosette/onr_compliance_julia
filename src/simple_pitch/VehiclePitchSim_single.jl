@@ -26,9 +26,9 @@ i = 2032
 # i = 2144
 
 # Loading files ------------------------------------------------------
-urdf_file = joinpath("urdf/planar_configs/urdf/new_urdf_configs_disc_100", "bravo_config_" * "$i.urdf") 
+# urdf_file = joinpath("urdf/planar_configs/urdf/new_urdf_configs_disc_100", "bravo_config_" * "$i.urdf") 
 # urdf_file = joinpath("urdf/planar_configs/urdf", "bravo7_planar_start.urdf") 
-# urdf_file = joinpath("urdf", "arm_vehicle.urdf") 
+urdf_file = joinpath("urdf", "arm_vehicle.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
@@ -103,7 +103,7 @@ end
 
 # Constants ---------------------------------------------------------
 state = MechanismState(mechanism_bravo_vehicle)
-final_time = 10
+final_time = 20
 Δt = 1e-3
 show_animation = true # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
@@ -122,6 +122,12 @@ if show_animation == true
 end
 
 # Output the final pitch value of the simulation --------------------
+println(" ")
+println("Degrees:")
 pitch = last(qs)[1] * (180 / pi)
+println(pitch)
 
+println(" ")
+println("Rads:")
+pitch = last(qs)[1]
 println(pitch)

@@ -61,7 +61,7 @@ function hydro_calc!(hydro_wrenches::Dict{BodyID, Wrench{Float64}}, t, state::Me
     vel=velocity(state, joints(state.mechanism)[1])
 
     # TODO: Dont know how to do the drag on only the vehicle
-    d_lin_coeffs = [4.03, 20, 5.18, .07, .07, .07]
+    d_lin_coeffs = [4.03, 30, 5.18, .07, .07, .07]
     d_nonlin_coeffs = [18.18, 21.66, 36.99, 1.55, 1.55, 1.55]
     tau_d = -d_lin_coeffs .* vel .+ -d_nonlin_coeffs .* vel .* abs.(vel)
     drag_wrench = Wrench(body_default_frame, tau_d[1:3], tau_d[4:6])   

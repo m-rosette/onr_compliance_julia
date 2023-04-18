@@ -15,17 +15,17 @@ include("FrameSetup_simple.jl")
 include("HydroCalc_simple.jl")
 include("SimWExt_simple.jl")
 
-println("Libraries imported.")
+# println("Libraries imported.")
 
 # Load collision free joint configurations from .mat file
 src_dir = dirname(pathof(onr_compliance_julia))
-file = joinpath(src_dir, "..", "urdf/planar_configs", "new_space_100.mat")
+file = joinpath(src_dir, "..", "urdf/planar_configs", "disc_bin_config_space_100.mat")
 mat_file = matopen(file)
 discretized_index = read(mat_file, "closestIndex")
 
-disc_space = 100
+disc_space = 100 
 
-global num_config = disc_space ^ 2
+global num_config = 25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS ------------------------------
 global final_pitches = Array{Float64}(undef, num_config)
 
 global i = 0
@@ -37,14 +37,14 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     println("--------    $i    --------")
     println("   ")
 
-    if discretized_index[i + 1] == 0
+    if isnan(discretized_index[i + 1])
         global i = i + 1
-        final_pitches[i] = 0
+        final_pitches[i] = NaN
         continue
     end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/com_shift_configs_100", "bravo_config_" * "$i.urdf")
+    urdf_file = joinpath("urdf/planar_configs/urdf/bin_configs_100", "bravo_config_" * "$i.urdf")
 
     # Visualizer ---------------------------------------------------------
     # vis = Visualizer()
@@ -143,11 +143,11 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     if pitch >= 0 && pitch <= 0.32
         global i = i + 1
         final_pitches[i] = pitch
-        println(pitch)
+        # println(pitch)
     end     
 end
 
 # println(final_pitches)
 
-CSV.write("test/WorkspaceData/pitch_data/new_urdf_4_pitch_data_100.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/bin_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
 # CSV.write("test/WorkspaceData/pitch_data/can_delete.csv", Tables.table(final_pitches), writeheader=false)
