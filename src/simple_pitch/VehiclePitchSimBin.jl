@@ -19,13 +19,13 @@ include("SimWExt_simple.jl")
 
 # Load collision free joint configurations from .mat file
 src_dir = dirname(pathof(onr_compliance_julia))
-file = joinpath(src_dir, "..", "urdf/planar_configs", "disc_bin_config_space_100.mat")
+file = joinpath(src_dir, "..", "urdf/planar_configs", "disc_bin2_config_space_100.mat")
 mat_file = matopen(file)
 discretized_index = read(mat_file, "closestIndex")
 
 disc_space = 100 
-
-global num_config = 25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS ------------------------------
+ 
+global num_config = 44668 #25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS ------------------------------
 global final_pitches = Array{Float64}(undef, num_config)
 
 global i = 0
@@ -44,7 +44,7 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/bin_configs_100", "bravo_config_" * "$i.urdf")
+    urdf_file = joinpath("urdf/planar_configs/urdf/bin2_configs_100", "bravo_config_" * "$i.urdf")
 
     # Visualizer ---------------------------------------------------------
     # vis = Visualizer()
@@ -119,7 +119,7 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
 
     # Constants ---------------------------------------------------------
     state = MechanismState(mechanism_bravo_vehicle)
-    final_time = 20
+    final_time = 10
     Δt = 1e-3
     show_animation = false # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
@@ -149,5 +149,5 @@ end
 
 # println(final_pitches)
 
-CSV.write("test/WorkspaceData/pitch_data/bin_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/bin2_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
 # CSV.write("test/WorkspaceData/pitch_data/can_delete.csv", Tables.table(final_pitches), writeheader=false)

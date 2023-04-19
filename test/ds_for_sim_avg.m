@@ -6,7 +6,7 @@ disp("Loading workspace data...")
 workspace_data = load('WorkspaceData/bravo_workspace_corrected.mat');
 
 % Setup .mat file storage method
-filename = 'WorkspaceData/pitch_data/disc_bin_config_space_100.mat';
+filename = 'WorkspaceData/pitch_data/disc_bin2_config_space_100.mat';
 file = matfile(filename, 'Writable', true); % Create new file instance
 disp('done')
 disp(' ')
@@ -31,7 +31,7 @@ z = linspace(-0.75, 1, num_points)';
 
 % Initialize arrays to save data to
 idx_exists = zeros(num_points^2, 1);
-num_neighbors = 5;
+num_neighbors = 10;
 
 temp_ee_point = zeros(100, 3);
 temp_configs = zeros(100, 3);
@@ -46,10 +46,11 @@ for i = 1:numel(X)
 
     % Print runtime ETA
     if ~mod(i,100)
-        elapsedTime = toc;
-        estimatedTime = elapsedTime*numel(X)/i;
-        ETA = estimatedTime - elapsedTime;
-        disp(['ETA: ', num2str(ETA/60), ' minutes']);
+%         elapsedTime = toc;
+%         estimatedTime = elapsedTime*numel(X)/i;
+%         ETA = estimatedTime - elapsedTime;
+%         disp(['ETA: ', num2str(ETA/60), ' minutes']);
+        disp(i)
     end
 
     % Gather the current ee_point to search

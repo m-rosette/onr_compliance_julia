@@ -3,14 +3,14 @@
 % clc
 
 % Load pitch data
-vehicle_pitch_data = load('WorkspaceData/pitch_data/bin_pitch_data.csv');
+vehicle_pitch_data = load('WorkspaceData/pitch_data/bin2_pitch_data.csv');
 
 % Convert pitch data to degrees
 vehicle_pitch_data = vehicle_pitch_data(:) * (180 / pi);
 
 % % Do you need to do any filtering?
 pitch_avg = zeros(10000, 1);
-num_neighbors = 5;
+num_neighbors = 10;
 idx_count = 0;
 for i = 1:length(pitch_avg)
 %     if vehicle_pitch_data(i) == 0
