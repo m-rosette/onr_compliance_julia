@@ -7,9 +7,12 @@ clc
 
 file = load("WorkspaceData\bravo_workspace_corrected.mat");
 
+data = load('WorkspaceData\pitch_data\disc_bin2_config_space_100.mat');
+configurations = data.configs;
+
 % Create Robot Representation
 bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
-arm_vehicle = importrobot('arm_vehicle.urdf', DataFormat='column');
+% arm_vehicle = importrobot('arm_vehicle.urdf', DataFormat='column');
 
 % Generate Trajectory and Check for Collisions
 % config = file.collision_free_angles(row, 1:3);
@@ -26,9 +29,11 @@ arm_vehicle = importrobot('arm_vehicle.urdf', DataFormat='column');
 %     drawnow
 % end
 
-config = [0.2697, 1.885, 2.9845, 2.5656];
-show(arm_vehicle, config');
-grid off
+% config = [1.806, 1.3614, 0.0785];
+row = 10000;
+config = configurations(row, :);
+show(bravo, config');
+grid on
 view(0, 0)
 lightangle(0, 60)
 

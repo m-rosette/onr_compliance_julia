@@ -25,14 +25,13 @@ discretized_index = read(mat_file, "closestIndex")
 
 disc_space = 100 
  
-global num_config = 44668 #25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS ------------------------------
+global num_config = 44668 #25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS - depending on dataset size ------------------------------
 global final_pitches = Array{Float64}(undef, num_config)
 
 global i = 0
 global pitch = 0
 
 while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
-    # while i <= num_config - 1
     println(" Iteration: ")
     println("--------    $i    --------")
     println("   ")
@@ -46,14 +45,7 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     # Loading files ------------------------------------------------------
     urdf_file = joinpath("urdf/planar_configs/urdf/bin2_configs_100", "bravo_config_" * "$i.urdf")
 
-    # Visualizer ---------------------------------------------------------
-    # vis = Visualizer()
     mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, -9.81])
-
-    # delete!(vis);
-
-    # Visulaize the URDFs
-    # mvis = MechanismVisualizer(mechanism_bravo_vehicle, URDFVisuals(urdf_file), vis[:bravo]);
 
     # Name the joints and bodies of the mechanism
     vehicle_joint = joints(mechanism_bravo_vehicle)
@@ -67,10 +59,8 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     # ----------------------------------------------------------
     #                 COM and COB Frame Setup
     # ----------------------------------------------------------
-    # frame_names_cob = ["vehicle_cob", "body1_1013_cob", "body2_1026_cob", "body3_1023_cob", "jaw_cob"]
-    # frame_names_com = ["vehicle_com", "body1_1013_com", "body2_1026_com", "body3_1023_com", "jaw_com"]
-    frame_names_cob = ["vehicle_cob"] #, "0_cob", "1_cob", "2_cob", "3_cob", "4_cob", "5_cob", "6_cob", "7_cob",]
-    frame_names_com = ["vehicle_com"] #, "0_com", "1_com", "2_com", "3_com", "4_com", "5_com", "6_com", "7_com",]
+    frame_names_cob = ["vehicle_cob"]
+    frame_names_com = ["vehicle_com"]
     # Assume default frame = COM 
     # TODO: Verify the location of the COB and COM on vehicle body
     # cob_vecs = [SVector{3, Float64}([0.0, 0.0, 0.02]), SVector{3, Float64}([0.033, -0.043, -0.07]), SVector{3, Float64}([0.020, 0.012, -0.140]), SVector{3, Float64}([0.033, -0.038, -0.008]), SVector{3, Float64}([0.0, 0.0, 0.0])]
@@ -110,8 +100,6 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
         push!(grav_lin_forces, lin_force)
     end
 
-    # println("CoM and CoB frames initialized. \n")
-
     function reset_to_equilibrium!(state)
         zero!(state)
         zero_velocity!(state)
@@ -121,21 +109,11 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     state = MechanismState(mechanism_bravo_vehicle)
     final_time = 10
     Δt = 1e-3
-    show_animation = false # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
     # Reset the sim to the equilibrium position
     reset_to_equilibrium!(state)
 
-    # println("Simulating...")
     ts, qs, vs = simulate_with_ext_forces(state, final_time, hydro_calc!; Δt=Δt)
-    # println("done.")
-
-    # if show_animation == true
-    #     print("Animating... ")
-    #     setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
-    #     open(mvis)
-    #     println("done.")
-    # end 
 
     # Output the final pitch value of the simulation --------------------
     pitch = last(qs)[1]
@@ -147,7 +125,4 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     end     
 end
 
-# println(final_pitches)
-
 CSV.write("test/WorkspaceData/pitch_data/bin2_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
-# CSV.write("test/WorkspaceData/pitch_data/can_delete.csv", Tables.table(final_pitches), writeheader=false)

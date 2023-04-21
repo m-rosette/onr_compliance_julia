@@ -103,7 +103,7 @@ end
 
 # Constants ---------------------------------------------------------
 state = MechanismState(mechanism_bravo_vehicle)
-final_time = 20
+final_time = 5
 Δt = 1e-3
 show_animation = true # ----------------------------------------------------------------- ########## ANIMATION ######### -----------------------------
 
@@ -116,6 +116,14 @@ println("done.")
 
 if show_animation == true
     print("Animating... ")
+
+    # com_wrt_vehframe = SVector{3, Float64}([center_of_mass(state).v[1], center_of_mass(state).v[2], center_of_mass(state).v[3]])
+    com_wrt_vehframe = SVector{3, Float64}([-0.0016132093242051723, -0.0002093193750240072, -0.058400586738375004])
+    com_frame = CartesianFrame3D("com_cob")
+    com_transform = Transform3D(com_frame, default_frame(vehicle_body), com_wrt_vehframe)
+    add_frame!(vehicle_body, com_transform)
+    setelement!(mvis, com_frame)
+
     setanimation!(mvis, MeshCat.Animation(mvis, ts, qs))
     open(mvis)
     println("done.")
@@ -131,3 +139,7 @@ println(" ")
 println("Rads:")
 pitch = last(qs)[1]
 println(pitch)
+
+# println(joint_torque!(joints(mechanism_bravo_vehicle)[1]), last(qs))
+# println(RigidBodyDynamics.joint_twist(vehicle_joint), last(qs), last(qv))
+
