@@ -747,7 +747,7 @@
     <parent link="bravo_1026_1_joint_link"/>
     <child link="bravo_1023_0_joint_link"/>
     <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0 0 -0.7853981633974483" xyz="-0.041 -0.058 0.0055"/>
+    <origin rpy="0 0 0" xyz="-0.041 -0.058 0.0055"/>
   </joint>
   <joint name="bravo_axis_d" type="fixed">
     <dynamics damping="10.0" friction="0.0"/>
@@ -763,7 +763,7 @@
     <parent link="bravo_1013_joint_link"/>
     <child link="bravo_1026_0_joint_link"/>
     <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0 0.0 -0.7853981633974483" xyz="0.0040000000018364235 -0.289 0.0"/>
+    <origin rpy="0 0.0 -0.6416" xyz="0.0040000000018364235 -0.289 0.0"/>
   </joint>
   <joint name="bravo_axis_f" type="fixed"> <!-- Used to be revolute -->
     <dynamics damping="10.0" friction="0.0"/>
@@ -771,6 +771,6 @@
     <parent link="bravo_1019_end_link"/>
     <child link="bravo_1013_joint_link"/>
     <axis xyz=" 0. 0. 1."/>
-    <origin rpy="0.0 0.0 2.356194490192345" xyz="0.046 0.0642 0.0"/>
+    <origin rpy="0.0 0.0 1.5707" xyz="0.046 0.0642 0.0"/>
   </joint>
 </robot>

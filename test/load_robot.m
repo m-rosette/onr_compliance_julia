@@ -31,9 +31,10 @@ bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
 
 % config = [1.806, 1.3614, 0.0785];
 row = 10000;
-config = configurations(row, :);
+% config = configurations(row, :);
+config = [1.5707, pi, pi];
 show(bravo, config');
-grid on
+grid off
 view(0, 0)
 lightangle(0, 60)
 
