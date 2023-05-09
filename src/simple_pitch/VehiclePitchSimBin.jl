@@ -43,7 +43,7 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/bin2_configs_100", "bravo_config_" * "$i.urdf")
+    urdf_file = joinpath("urdf/planar_configs/urdf/arm_camera_vehicle", "bravo_config_" * "$i.urdf")
 
     mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, -9.81])
 
@@ -125,4 +125,4 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     end     
 end
 
-CSV.write("test/WorkspaceData/pitch_data/bin2_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/arm_camera_pitch_data.csv", Tables.table(final_pitches), writeheader=false)

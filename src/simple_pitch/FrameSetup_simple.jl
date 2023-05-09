@@ -29,7 +29,8 @@ function setup_frames!(mech, frame_names_cob, frame_names_com, cob_vecs, com_vec
 
     # Arm base is rigidly attached to vehicle, so it has a transform in the vehicle's frame. It's the 39th body in the URDF attached to the vehicle. WITH RESPECT TO FLOATING BASE JOINT
     # link = 39 # Use this for fixed joint urdfs
-    link = 39
+    # link = 41 # Use this for arm_camera_vehicle fixed joint urdfs
+    link = 41
     linkframe_wrt_vehframe = translation(RigidBodyDynamics.frame_definitions(vehicle_body)[link])
     
     # println(linkframe_wrt_vehframe)

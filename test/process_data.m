@@ -3,8 +3,8 @@ clear
 clc
 
 % Load data
-vehicle_pitch_data = load('WorkspaceData/pitch_data/bin2_pitch_data.csv');
-arm_torque_data = load('WorkspaceData/pitch_data/test_bin2_torque_data.csv');
+vehicle_pitch_data = load('WorkspaceData/pitch_data/arm_camera_pitch_data.csv');
+arm_torque_data = load('WorkspaceData/pitch_data/arm_zframe_torque_data.csv');
 
 % Unit conversion
 vehicle_pitch_data = vehicle_pitch_data(:) * (180 / pi);    % Rad to deg
@@ -35,8 +35,8 @@ stiffness = torque_avg ./ pitch_avg;
 
 %% Save data to .mat file
 % Setup .mat file storage method
-filename = 'WorkspaceData/pitch_data/pitch_torque_stiff.mat';
+filename = 'WorkspaceData/pitch_data/pitch_torque_camera_vehicle.mat';
 file = matfile(filename, 'Writable', true); % Create new file instance
 file.pitch(1:10000, 1) = pitch_avg;
 file.torque(1:10000, 1) = torque_avg;
-file.stiffness_rot(1:10000, 1) = stiffness;
+% file.stiffness_rot(1:10000, 1) = stiffness;

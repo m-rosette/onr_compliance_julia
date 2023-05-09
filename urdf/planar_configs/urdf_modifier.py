@@ -18,7 +18,7 @@ configs_file = mat73.loadmat('disc_bin2_config_space_100.mat')
 configs = configs_file['configs']
 
 # Initialize urdf to parse through
-tree = ET.parse('urdf/bravo7_corrected.urdf')
+tree = ET.parse('urdf/arm_on_z_frame.urdf')
 root = tree.getroot()
 
 # Actuated joints
@@ -62,4 +62,4 @@ if run_urdf_gen == True:
                 continue
         
         # Save the new config as its own URDF
-        tree.write(f'urdf/bin2_arm_only_configs/bravo_config_{count}.urdf', xml_declaration=True)
+        tree.write(f'urdf/arm_zframe/bravo_config_{count}.urdf', xml_declaration=True)

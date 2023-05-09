@@ -30,10 +30,10 @@ include("TrajGenJoints.jl")
 # Loading files ------------------------------------------------------
 src_dir = dirname(pathof(onr_compliance_julia))
 # urdf_file = joinpath(src_dir, "..", "urdf", "bravo7_planar_toy_saab copy.urdf")   # Arm and Seabotix
-# urdf_file = joinpath("urdf", "bravo7_corrected.urdf")
+urdf_file = joinpath("urdf", "arm_camera_vehicle.urdf")
 
-i = 10000 
-urdf_file = joinpath("urdf/planar_configs/urdf/bin2_arm_only_configs", "bravo_config_" * "$i.urdf")
+# i = 10000 
+# urdf_file = joinpath("urdf/planar_configs/urdf/bin2_arm_only_configs", "bravo_config_" * "$i.urdf")
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
@@ -46,11 +46,12 @@ mvis = MechanismVisualizer(mechanism_bravo, URDFVisuals(urdf_file), vis[:bravo])
 
 # Name the joints and bodies of the mechanism
 # vehicle_joint, joint1, joint2, joint3 = joints(mechanism_bravo)
-joint1, joint2, joint3 = joints(mechanism_bravo)
-world, body1, body2, body3 = bodies(mechanism_bravo)
+# joint1, joint2, joint3 = joints(mechanism_bravo)
+# world, body1, body2, body3 = bodies(mechanism_bravo)
+world, z_frame_perception = bodies(mechanism_bravo)
 
-body_frame = default_frame(world)
-base_frame = root_frame(mechanism_bravo)
+# body_frame = default_frame(world)
+# base_frame = root_frame(mechanism_bravo)
 
 
 # ----------------------------------------------------------
@@ -64,7 +65,7 @@ state = MechanismState(mechanism_bravo)
 
 com_wrt_vehframe = center_of_mass(state).v
 
-# com_wrt_vehframe = SVector{3, Float64}([center_of_mass(state).v[1], center_of_mass(state).v[2], center_of_mass(state).v[3]])
+com_wrt_vehframe = SVector{3, Float64}([center_of_mass(state).v[1], center_of_mass(state).v[2], center_of_mass(state).v[3]])
 # com_wrt_vehframe = SVector{3, Float64}([0.3908982672531896, 5.1278841366611546e-5, 0.2849878845117186])
 com_frame = CartesianFrame3D("com_cob")
 com_transform = Transform3D(com_frame, default_frame(world), com_wrt_vehframe)

@@ -33,7 +33,7 @@ for i in 1:num_config
     end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/bin2_arm_only_configs", "bravo_config_" * "$i.urdf")
+    urdf_file = joinpath("urdf/planar_configs/urdf/arm_zframe", "bravo_config_" * "$i.urdf")
     # urdf_file = joinpath("urdf/planar_configs/urdf/arm_only_configs", "bravo_config_2035.urdf")
 
     # Mechanism Setup
@@ -60,4 +60,4 @@ end
 # println(final_torque)
 println("done")
 
-CSV.write("test/WorkspaceData/pitch_data/test_bin2_torque_data.csv", Tables.table(final_torque), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/arm_zframe_torque_data.csv", Tables.table(final_torque), writeheader=false)

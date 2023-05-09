@@ -28,7 +28,7 @@ i = 2032
 # Loading files ------------------------------------------------------
 # urdf_file = joinpath("urdf/planar_configs/urdf/new_urdf_configs_disc_100", "bravo_config_" * "$i.urdf") 
 # urdf_file = joinpath("urdf/planar_configs/urdf", "bravo7_planar_start.urdf") 
-urdf_file = joinpath("urdf", "arm_vehicle.urdf") 
+urdf_file = joinpath("urdf", "arm_camera_vehicle.urdf") 
 
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
