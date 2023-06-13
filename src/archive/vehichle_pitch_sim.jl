@@ -27,7 +27,6 @@ urdf_file = joinpath("urdf", "arm_vehicle.urdf")
 # Visualizer ---------------------------------------------------------
 vis = Visualizer()
 mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=true, gravity=[0.0, 0.0, 0])
-
 delete!(vis)
 
 # Visulaize the URDFs
