@@ -11,7 +11,7 @@ data = load('WorkspaceData\pitch_data\disc_bin2_config_space_100.mat');
 configurations = data.configs;
 
 % Create Robot Representation
-bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
+bravo = importrobot('bravo7_ft.urdf', DataFormat='column');
 % arm_vehicle = importrobot('arm_vehicle.urdf', DataFormat='column');
 
 % Generate Trajectory and Check for Collisions
@@ -30,12 +30,13 @@ bravo = importrobot('bravo7_planar.urdf', DataFormat='column');
 % end
 
 % config = [1.806, 1.3614, 0.0785];
-row = 10000;
+% row = 10000;
 % config = configurations(row, :);
-config = [2.5, 1.2, 0.9];
+config = [pi, pi/2, pi, 0, pi, 0, 0, 0, 0]
+% massMatrix(bravo)
 show(bravo, config');
-grid off
-view(0, 0)
-lightangle(0, 60)
+% grid off
+% view(0, 0)
+% lightangle(0, 60)
 
-julia_config = [config(1), config(2)-pi, config(3)-pi]
+% julia_config = [config(1), config(2)-pi, config(3)-pi]

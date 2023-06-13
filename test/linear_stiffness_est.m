@@ -10,68 +10,61 @@ stiffness_rot = data.stiffness_rot;
 
 % k_rot = 101.98; % N-m/rad ------> ARM ONLY
 k_rot = 181.1768; % N-m/rad ------> ARM, CAMERA, Z-FRAME
+% k_rot = 49; % testing lower values to see if the lin fit is incorrect
 
 %% Process Data
-num_val = 100;
+num_val = 500;
 
 r = linspace(0.4, 0.7, num_val);
 
-theta_max = max(pitch) - min(pitch);
+theta_max = max(pitch);
 F_max = max(torque) ./ r;
 x_max = r .* theta_max;
 
-
 k = zeros(1, num_val);
 for i = 1:length(r)
-    % Linear stiffness mapping (see written work)
-    k_linear = k_rot ./ (r(i)^2 .* cos(pitch));
+%     % Linear stiffness mapping (see written work)
+%     k_linear = k_rot ./ (r(i)^2 .* cos(pitch));
+%     nan_logic = ~isnan(k_linear(:, 1));
+%     temp_k_lin = k_linear(nan_logic, 1);
+%     k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
+%     k(1, i) = k_lin_final;
+
+%     k(1, i) = k_rot / (r(i)^2 * cos(theta_max)); % Scaling issue
+%     k(1, i) = k_rot * theta_max / (r(i)^2 * cos(theta_max)); % Fixes scaling issue
+
+    % Testing new equation (difference between theta_max and the pitch)
+    k_linear = (k_rot * theta_max ./ (r(i)^2 .* pitch .* cos(pitch)) - (k_rot ./ (r(i)^2 .* cos(pitch))));
     nan_logic = ~isnan(k_linear(:, 1));
     temp_k_lin = k_linear(nan_logic, 1);
     k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
     k(1, i) = k_lin_final;
-%     disp(k_lin_final)
 end
 
-%% Spring length opt
-% % For spring length
-% x_spring = linspace(0.025, 0.15, num_val);
-% r_height = linspace(0.1, 0.5, num_val);
-% [X, R] = meshgrid(x_spring, r_height);
+% Unit conversion 
+k = k ./ 175.126835;    % N/m to lbs/in
+r = r .* 39.37;         % m to in
+x_max = x_max .* 39.37; % m to in
+F_max_torque = F_max .* 0.2248089431; % N to lbs
+F_max_spring = x_max .* k;
+num_springs = 2;
 
-% For max spring length change
-r_height = linspace(0.1, 0.5, num_val);
-% x_max = r_height .* theta_max;
-[X, R] = meshgrid(x_max, r_height);
-
-k_xopt = zeros(1, numel(X));
-for i = 1:numel(X)
-
-    % Linear stiffness mapping with spring length (see written work)
-%     k_linear = (k_rot .* pitch) ./ (R(i) .* cos(pitch) .* (R(i) .* tan(atan(X(i) ...
-%         / R(i)) + pitch) - X(i)));
-
-    % Linear stiffness mapping
-    k_linear = k_rot ./ (R(i)^2 .* cos(pitch));
-
-    nan_logic = ~isnan(k_linear(:, 1));
-    temp_k_lin = k_linear(nan_logic, 1);
-    k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
-    k_xopt(1, i) = k_lin_final;
-%     disp(k_lin_final)
-end
-
-% k_xopt_reshape = reshape(k_xopt, [10, 10]);
-
-% Single Iteration of above Function
-% theta_test = 0.2;
-% x_test = 0.05;
-% r_test = 0.15;
-% k_test = (k_rot * theta_test) / (x_test .* cos(theta_test) * (r_test * tan(atan(x_test ...
-%         / r_test) + theta_test) - x_test));
-
+ideal_params_idx = 329;
+disp('Parameters:')
+disp('number of springs')
+disp(num_springs)
+disp('spring constant (lbs/in): ')
+disp(k(ideal_params_idx) / num_springs)
+disp('mount height (in): ')
+disp(r(ideal_params_idx))
+disp('max force (lbs): ')
+disp(F_max_spring(ideal_params_idx) / num_springs)
+disp('max displacement (in): ')
+disp(x_max(ideal_params_idx))
 
 %% Plotting
 % figure
+subplot(1, 2, 1)
 plot(r, k)
 hold on
 plot(r, k./2)
@@ -80,19 +73,25 @@ plot(r, k./3)
 hold on
 plot(r, k./4)
 title('Linear Stiffness vs Mount Height (w/ Z-Frame)')
-xlabel('r (m)')
-ylabel('k_{lin} (N/m)')
+% xlabel('r (m)')
+% ylabel('k_{lin} (N/m)')
+xlabel('r (in)')
+ylabel('k_{lin} (lbs/in)')
 legend('1 spring', '2 springs', '3 springs', '4 springs')
-
-figure
-plot(r, x_max)
-title('Max. Deflection vs Mount Height')
-xlabel('r (m)')
-ylabel('x_{max} - (m)')
+grid on
 
 % figure
-% surf(R, X, k_xopt_reshape ./ 2)
-% title('Linear stiffness estimate - 2 SPRINGS')
-% xlabel('mount height - r (m)')
-% ylabel('spring length - x (m)')
-% zlabel('k_{lin} (N/m)')
+subplot(1, 2, 2)
+plot(r, x_max)
+hold on
+plot(r, F_max_spring ./ 2)
+hold on
+plot(r, F_max_torque ./ 2)
+title('Max. Deflection & Force vs Mount Height', 'For 2 Springs')
+% xlabel('r (m)')
+% ylabel('x_{max} - (m)')
+xlabel('r (in)')
+ylabel('Max. Deflection & Force')
+legend('spring deflection (in)', 'max. force [k*x] (lbs)', 'max. force [T/r] (lbs)')
+grid on
+hold off
