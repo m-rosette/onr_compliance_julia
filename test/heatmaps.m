@@ -3,7 +3,7 @@ clear
 clc
 
 % Load data
-data = load('WorkspaceData/pitch_data/pitch_torque_camera_vehicle.mat');
+data = load('WorkspaceData/pitch_data/pitch_torque_camera_vehicle_trans.mat');
 
 pitch = data.pitch;
 torque = data.torque;

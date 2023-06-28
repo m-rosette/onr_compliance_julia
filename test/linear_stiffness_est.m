@@ -3,13 +3,15 @@ clear
 clc
 clf
 
-data = load('WorkspaceData\pitch_data\pitch_torque_stiff.mat');
+data = load('WorkspaceData\pitch_data\pitch_torque_camera_vehicle_trans.mat');
+% data = load('WorkspaceData\pitch_data\pitch_torque_stiff.mat');
 pitch = data.pitch * pi / 180; % Deg to Rad
 torque = data.torque;
-stiffness_rot = data.stiffness_rot;
+% stiffness_rot = data.stiffness_rot;
 
 % k_rot = 101.98; % N-m/rad ------> ARM ONLY
-k_rot = 181.1768; % N-m/rad ------> ARM, CAMERA, Z-FRAME
+% k_rot = 181.1768; % N-m/rad ------> ARM, CAMERA, Z-FRAME
+k_rot = 102.0910; % N-m/rad ------> ARM ON VEHICLE
 % k_rot = 49; % testing lower values to see if the lin fit is incorrect
 
 %% Process Data
@@ -23,22 +25,25 @@ x_max = r .* theta_max;
 
 k = zeros(1, num_val);
 for i = 1:length(r)
-%     % Linear stiffness mapping (see written work)
-%     k_linear = k_rot ./ (r(i)^2 .* cos(pitch));
-%     nan_logic = ~isnan(k_linear(:, 1));
-%     temp_k_lin = k_linear(nan_logic, 1);
-%     k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
-%     k(1, i) = k_lin_final;
+% !!!!!!!!! TODO: Need to verify why the original and the new model require the two different linear stiffness mapping equations...
 
-%     k(1, i) = k_rot / (r(i)^2 * cos(theta_max)); % Scaling issue
-%     k(1, i) = k_rot * theta_max / (r(i)^2 * cos(theta_max)); % Fixes scaling issue
 
-    % Testing new equation (difference between theta_max and the pitch)
-    k_linear = (k_rot * theta_max ./ (r(i)^2 .* pitch .* cos(pitch)) - (k_rot ./ (r(i)^2 .* cos(pitch))));
+    % Linear stiffness mapping (see written work)
+    k_linear = k_rot ./ (r(i)^2 .* cos(pitch));
     nan_logic = ~isnan(k_linear(:, 1));
     temp_k_lin = k_linear(nan_logic, 1);
     k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
     k(1, i) = k_lin_final;
+
+%     k(1, i) = k_rot / (r(i)^2 * cos(theta_max)); % Scaling issue
+%     k(1, i) = k_rot * theta_max / (r(i)^2 * cos(theta_max)); % Fixes scaling issue
+
+%     % Testing new equation (difference between theta_max and the pitch)
+%     k_linear = (k_rot * theta_max ./ (r(i)^2 .* pitch .* cos(pitch)) - (k_rot ./ (r(i)^2 .* cos(pitch))));
+%     nan_logic = ~isnan(k_linear(:, 1));
+%     temp_k_lin = k_linear(nan_logic, 1);
+%     k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
+%     k(1, i) = k_lin_final;
 end
 
 % Unit conversion 
