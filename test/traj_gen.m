@@ -13,9 +13,9 @@ bravo = importrobot('bravo7.urdf', DataFormat='column');
 bravo.Gravity = [0 0 -9.81];
 
 % Load data
-% ### Data Descritption - discritized for grid regions with 10 sampled
+% ### Data Description - discritized for grid regions with 10 sampled
     % points within each region
-data = load("WorkspaceData/pitch_data/disc_bin2_config_space_100.mat");
+data = load("WorkspaceData/pitch_data/hardware_configs_actuated_only.mat");
 zero_column = zeros(length(data.configs), 1);
 pi_column = pi * ones(length(data.configs), 1);
 configs = [pi_column, data.configs(:, 1), data.configs(:, 2), ...
@@ -25,14 +25,15 @@ numJoints = numel(homeConfiguration(bravo));
 
 % Set up simulation parameters
 tSpan = 0:0.01:0.5;
-q0 = [pi, pi, 0, 0, pi, 0, 0];
+q0 = configs(1, :)';
 qd0 = zeros(numJoints, 1);
-initialState = [q0'; qd0];
+initialState = [q0; qd0];
 
 % Set up joint control targets
-rand_end_index = randi([1 length(configs(:, 1))], 1);
-targetJointPosition = configs(rand_end_index, 1:numJoints)';
-% targetJointPosition = [pi/2, pi/4, 0, 0, pi/2, 0, 0];
+% rand_end_index = randi([1 length(configs(:, 1))], 1);
+% targetJointPosition = configs(rand_end_index, 1:numJoints)';
+config_num = 2;
+targetJointPosition = configs(config_num, :)';
 targetJointVelocity = zeros(numJoints, 1);
 targetJointAcceleration = zeros(numJoints, 1);
 

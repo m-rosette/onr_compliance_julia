@@ -106,7 +106,7 @@ SSres = sum((torque_new-y_est).^2);                       % Residual Sum-Of-Squa
 Rsq = 1-SSres/SStot;                            % R^2
 
 dim = [.15 .5 .3 .3];
-str = 'R^{2} = 0.879';
+str = 'R^{2} = 0.894';
 annotation('textbox',dim,'String',str,'FitBoxToText','on', 'FontSize', 9);
 
 xlabel('Vehicle Pitch (deg)')

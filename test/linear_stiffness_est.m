@@ -19,25 +19,22 @@ num_val = 500;
 
 r = linspace(0.4, 0.7, num_val);
 
+test_pitch = 15.5 * pi / 180;
+
 theta_max = max(pitch);
 F_max = max(torque) ./ r;
 x_max = r .* theta_max;
 
 k = zeros(1, num_val);
 for i = 1:length(r)
-% !!!!!!!!! TODO: Need to verify why the original and the new model require the two different linear stiffness mapping equations...
+    k(1, i) = k_rot / r(i)^2 * cos(test_pitch);
 
-
-    % Linear stiffness mapping (see written work)
-    k_linear = k_rot ./ (r(i)^2 .* cos(pitch));
-    nan_logic = ~isnan(k_linear(:, 1));
-    temp_k_lin = k_linear(nan_logic, 1);
-    k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
-    k(1, i) = k_lin_final;
-
-%     k(1, i) = k_rot / (r(i)^2 * cos(theta_max)); % Scaling issue
-%     k(1, i) = k_rot * theta_max / (r(i)^2 * cos(theta_max)); % Fixes scaling issue
-
+%     % Linear stiffness mapping (see written work)
+%     k_linear = k_rot ./ (r(i)^2 .* cos(pitch));
+%     nan_logic = ~isnan(k_linear(:, 1));
+%     temp_k_lin = k_linear(nan_logic, 1);
+%     k_lin_final = sum(temp_k_lin) / length(temp_k_lin);
+%     k(1, i) = k_lin_final;
 %     % Testing new equation (difference between theta_max and the pitch)
 %     k_linear = (k_rot * theta_max ./ (r(i)^2 .* pitch .* cos(pitch)) - (k_rot ./ (r(i)^2 .* cos(pitch))));
 %     nan_logic = ~isnan(k_linear(:, 1));
@@ -54,7 +51,7 @@ F_max_torque = F_max .* 0.2248089431; % N to lbs
 F_max_spring = x_max .* k;
 num_springs = 2;
 
-ideal_params_idx = 329;
+ideal_params_idx = 350;
 disp('Parameters:')
 disp('number of springs')
 disp(num_springs)

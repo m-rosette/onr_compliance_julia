@@ -14,11 +14,12 @@ import mat73
 # configs = configs_file['closest_config'] # Save only the configs and not the column headers
 # print(configs)
 
-configs_file = mat73.loadmat('disc_bin2_config_space_100.mat')
+# configs_file = mat73.loadmat('disc_bin2_config_space_100.mat')
+configs_file = mat73.loadmat('hardware_configs_actuated_only.mat')
 configs = configs_file['configs']
 
 # Initialize urdf to parse through
-tree = ET.parse('urdf/arm_on_z_frame_buouancy.urdf')
+tree = ET.parse('urdf/arm_camera_vehicle.urdf')
 root = tree.getroot()
 
 # Actuated joints
@@ -62,4 +63,4 @@ if run_urdf_gen == True:
                 continue
         
         # Save the new config as its own URDF
-        tree.write(f'urdf/arm_zframe_buouancy/bravo_config_{count}.urdf', xml_declaration=True)
+        tree.write(f'urdf/arm_camera_vehicle_hardware/bravo_config_{count}.urdf', xml_declaration=True)

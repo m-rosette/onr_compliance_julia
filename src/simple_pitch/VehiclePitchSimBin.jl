@@ -19,13 +19,15 @@ include("SimWExt_simple.jl")
 
 # Load collision free joint configurations from .mat file
 src_dir = dirname(pathof(onr_compliance_julia))
-file = joinpath(src_dir, "..", "urdf/planar_configs", "disc_bin2_config_space_100.mat")
+# file = joinpath(src_dir, "..", "urdf/planar_configs", "disc_bin2_config_space_100.mat")
+file = joinpath(src_dir, "..", "urdf/planar_configs", "hardware_configs_actuated_only.mat")
 mat_file = matopen(file)
-discretized_index = read(mat_file, "closestIndex")
+# discretized_index = read(mat_file, "closestIndex")
 
 disc_space = 100 
  
-global num_config = 44668 #25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS - depending on dataset size ------------------------------
+# global num_config = 44668 #25408 # #_#_#_#_#_#_#_#_#_#_#_#__$$_$_$$$$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$_$__$_$_$$$ NEED TO UPDATE THIS - depending on dataset size ------------------------------
+global num_config = 11
 global final_pitches = Array{Float64}(undef, num_config)
 
 global i = 0
@@ -36,14 +38,14 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     println("--------    $i    --------")
     println("   ")
 
-    if isnan(discretized_index[i + 1])
-        global i = i + 1
-        final_pitches[i] = NaN
-        continue
-    end
+    # if isnan(discretized_index[i + 1])
+    #     global i = i + 1
+    #     final_pitches[i] = NaN
+    #     continue
+    # end
 
     # Loading files ------------------------------------------------------
-    urdf_file = joinpath("urdf/planar_configs/urdf/arm_camera_vehicle", "bravo_config_" * "$i.urdf")
+    urdf_file = joinpath("urdf/planar_configs/urdf/arm_camera_vehicle_hardware", "bravo_config_" * "$i.urdf")
 
     mechanism_bravo_vehicle = parse_urdf(urdf_file, floating=false, gravity=[0.0, 0.0, -9.81])
 
@@ -125,4 +127,4 @@ while pitch >= 0 && pitch <= 0.32 && i <= num_config - 1
     end     
 end
 
-CSV.write("test/WorkspaceData/pitch_data/arm_camera_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
+CSV.write("test/WorkspaceData/pitch_data/arm_camera_hardware_pitch_data.csv", Tables.table(final_pitches), writeheader=false)
